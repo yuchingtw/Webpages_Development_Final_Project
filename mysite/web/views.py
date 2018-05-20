@@ -36,13 +36,16 @@ def login_check(request):
 
 #rigister
 def register(request):
+    '''
+    密碼還沒做hash設定
+    '''
     if request.method=='POST':
         username = request.POST.get("username")
         password = request.POST.get("password").encode(encoding='utf-8')
-        name=request.POST.get("password").encode(encoding='utf-8')
+        name=request.POST.get("name")
         if(username==''or password=='' or name==''  ):
             return HttpResponse('欄位不能為空白')
-        Account.objects.create(username=username,password=password,name=name)
+        Account.objects.create(username=username,password_sha256=password,name=name)
         return HttpResponse('註冊成功')
         
     return render(request,'register/register.html')
