@@ -59,7 +59,7 @@ class Account(models.Model):
     """
     uuid = models.UUIDField(
         primary_key=True, editable=False, default=uuid.uuid4)
-    username = models.CharField(max_length=50)
+    username = models.CharField(max_length=50, unique=True)
     password_sha256 = models.CharField(max_length=64)
     name = models.CharField(max_length=20)
     intro = models.TextField(blank=True)

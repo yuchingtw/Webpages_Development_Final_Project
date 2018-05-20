@@ -1,5 +1,6 @@
 from django.shortcuts import render, get_object_or_404
 from django.http import HttpResponse
+from django.db.utils import IntegrityError
 
 from web.models import *
 import hashlib
@@ -19,7 +20,7 @@ def login(request):
         for account in accounts:
             if hashlib.sha256((account.username + secret).encode('utf-8')).hexdigest() == request.COOKIES['username']:
                 return HttpResponse('log in as ' + account.username)  # 跳轉  還沒寫
-    except KeyError as e:
+    except KeyError:
         pass
 
     # 沒有登入救回傳正常的登入頁面
@@ -55,8 +56,12 @@ def register(request):
         name = request.POST.get("name")
         if(username == ''or password_sha256 == '' or name == ''):
             return HttpResponse('欄位不能為空白')
-        Account.objects.create(
-            username=username, password_sha256=password_sha256, name=name)
+        try:
+            Account.objects.create(
+                username=username, password_sha256=password_sha256, name=name)
+        except IntegrityError:
+            return HttpResponse('存在相同用戶名')
+
         return HttpResponse('註冊成功')
 
     return render(request, 'register/register.html')
