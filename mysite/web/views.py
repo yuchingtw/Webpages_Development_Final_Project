@@ -8,7 +8,7 @@ import hashlib
 
 def login(request):
     """
-    登入頁面顯示 跳轉首頁
+    登入頁面顯示 跳轉首頁 這也還沒寫完
     """
     if 'user' in request.COOKIES:
         return HttpResponse('checked user your cookies is' + request.COOKIES['user'])
@@ -17,17 +17,18 @@ def login(request):
 
 def login_check(request):
     '''
-    檢查使用者
+    檢查使用者 還沒寫完拉
     '''
     username = request.POST.get("username")
     password = request.POST.get("password").encode(encoding='utf-8')
     accounts = Account.objects.all()
     if username in accounts.username:
         password_hash256 = hashlib.sha256(password).hexdigest()
+
     else:
         return HttpResponse('Login failed')
 
     mycontext = {'A': 'B', 'hash': password_hash256}
     response = render(request, "login/login.html", mycontext)
-    #response.set_cookie('user', value="username")
+    #response.set_cookie(hash('user'+'secret'), value="username")
     return response
