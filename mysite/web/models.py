@@ -1,5 +1,7 @@
-from django.db import models
 import uuid
+from django.contrib.auth.models import AbstractUser
+from django.utils.translation import ugettext_lazy as _
+from django.db import models
 
 # Create your models here.
 
@@ -53,15 +55,16 @@ class Post(models.Model):
         return self.title
 
 
-class Account(models.Model):
+class Account(AbstractUser):
     """
-    這個是帳號, username ,password_sha256, name, intro
+    這個是帳號  nickname, intro, coin, videos, posts
     """
-    uuid = models.UUIDField(
-        primary_key=True, editable=False, default=uuid.uuid4)
-    username = models.CharField(max_length=50, unique=True)
-    password_sha256 = models.CharField(max_length=64)
-    name = models.CharField(max_length=20)
+
+    class Meta():
+        verbose_name = _('account')
+        verbose_name_plural = _('accounts')
+
+    nickname = models.CharField(max_length=20)
     intro = models.TextField(blank=True)
     silver_coin = models.DecimalField(
         max_digits=10, decimal_places=0, default=0)  # coin for donate
@@ -73,4 +76,4 @@ class Account(models.Model):
     posts = models.ForeignKey(Post, null=True, blank=True)
 
     def __str__(self):
-        return str(self.uuid) + self.username
+        return self.username

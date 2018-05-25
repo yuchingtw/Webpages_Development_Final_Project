@@ -4,6 +4,9 @@ from web import views
 
 urlpatterns = [
     url(r'login/', views.login, name="login_page"),
+    url(r'logout/', views.logout, name="logout"),
     url(r'register/', views.register, name="register_page"),
-    url(r'login_check/', views.login_check, name='login_check'),
+    url(r'logrequired/', views.login_require_page, name="logrequired"),
+    url(r'index/', views.index, name="index"),
+
 ]
