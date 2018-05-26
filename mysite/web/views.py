@@ -56,7 +56,6 @@ def register(request):
     '''
     註冊
     '''
-
     if request.method == 'POST':
         try:
             username = request.POST.get("username")
