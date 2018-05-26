@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>這是首葉</title>
+</head>
+
+<body>
+    這是首頁~~
+    <br> 妳現在登入的帳號是:{{ request.user }}
+    <form action="/web/logout" method="get">
+        <input type="submit" value="logout">
+    </form>
+    <form action="/web/login" method="get">
+        <input type="submit" value="login">
+    </form>
+    登入才能使用的頁面
+    <form action="/web/logrequired" method="get">
+        <input type="submit" value="以登入?">
+    </form>
+</body>
+
+</html>
