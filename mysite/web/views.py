@@ -43,7 +43,6 @@ def login(request):
         context = dict()
         if request.GET.get('next'):
             context = {'next': request.GET.get('next')}
-        print(context['next'])
         return render(request, LOGIN_PAGE, context)
 
 
