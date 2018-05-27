@@ -6,37 +6,48 @@ from django.contrib import auth
 
 from web.models import Account
 # Create your views here.
-
 HOME_PAGE = 'index.html'
+HOME_PAGE_URL = "/web/index/"
 LOGIN_PAGE = 'login/login.html'
+LOGIN_PAGE_URL = "/web/login/"
 REGISTER_PAGE = 'register/register.html'
 LOGIN_REQUIRED_PAGE = 'logrequirePage.html'
 
 
 def index(request):
-    return render(request, HOME_PAGE)
+    context = dict()
+    if str(request.user) != "AnonymousUser":
+        context = {'anon': 'true'}
+    return render(request, HOME_PAGE, context)
 
 
 def login(request):
     """
     登入頁面顯示 跳轉首頁 這也還沒寫完
     """
-    if request.user.username == "AnonymousUser":
-        return render(request, HOME_PAGE)
+    if str(request.user) != "AnonymousUser":
+        return HttpResponseRedirect(HOME_PAGE_URL)
     if request.method == 'POST':
         username = request.POST.get("username")
         password = request.POST.get("password")
         user = auth.authenticate(username=username, password=password)
         if user is not None and user.is_active:
             auth.login(request, user)
+
+            if request.POST.get('next'):
+                return HttpResponseRedirect(request.POST.get('next'))
+            return HttpResponseRedirect(HOME_PAGE_URL)
         else:
             return render(request, LOGIN_PAGE)
     else:
-        return render(request, LOGIN_PAGE)
-    return render(request, HOME_PAGE)
+        context = dict()
+        if request.GET.get('next'):
+            context = {'next': request.GET.get('next')}
+        print(context['next'])
+        return render(request, LOGIN_PAGE, context)
 
 
-@login_required
+@login_required(login_url=LOGIN_PAGE_URL)
 def login_require_page(request):
     """
     測試登入權限
@@ -49,7 +60,7 @@ def logout(request):
     設定 cookeis username 為 anonymous
     """
     auth.logout(request)
-    return render(request, HOME_PAGE)
+    return HttpResponseRedirect('/web/index')
 
 
 def register(request):
