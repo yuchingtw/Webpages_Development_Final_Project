@@ -66,12 +66,12 @@ class Account(AbstractUser):
 
     nickname = models.CharField(max_length=20)
     intro = models.TextField(blank=True)
-    silver_coin = models.DecimalField(
-        max_digits=10, decimal_places=0, default=0)  # coin for donate
-    gold_coin = models.DecimalField(
-        max_digits=10, decimal_places=0, default=0)  # coin for exchang money
-    online_time = models.DecimalField(
-        max_digits=10, decimal_places=0, default=0)  # unit:second
+    silver_coin = models.PositiveIntegerField(
+        default=0)  # coin for donate
+    gold_coin = models.PositiveIntegerField(
+        default=0)  # coin for exchang money
+    online_time = models.PositiveIntegerField(
+        default=0)  # unit:second
     videos = models.ForeignKey(Video, null=True, blank=True)
     posts = models.ForeignKey(Post, null=True, blank=True)
 
