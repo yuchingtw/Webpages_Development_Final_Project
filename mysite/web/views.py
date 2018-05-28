@@ -1,67 +1,89 @@
 from django.shortcuts import render, get_object_or_404
-from django.http import HttpResponse
+from django.http import HttpResponse, HttpResponseRedirect
 from django.db.utils import IntegrityError
+from django.contrib.auth.decorators import login_required
+from django.contrib import auth
 
-from web.models import *
-import hashlib
+from web.models import Account
 # Create your views here.
+HOME_PAGE = 'index.html'
+HOME_PAGE_URL = "/web/index/"
+LOGIN_PAGE = 'login/login.html'
+LOGIN_PAGE_URL = "/web/login/"
+REGISTER_PAGE = 'register/register.html'
+LOGIN_REQUIRED_PAGE = 'logrequirePage.html'
 
-# 這是給cookies用的secret
-secret = 'secret'
+
+def index(request):
+    context = dict()
+    if str(request.user) != "AnonymousUser":
+        context = {'anon': 'true'}
+    return render(request, HOME_PAGE, context)
 
 
-# login
 def login(request):
     """
     登入頁面顯示 跳轉首頁 這也還沒寫完
     """
-    try:
-        accounts = Account.objects.all()
-        for account in accounts:
-            if hashlib.sha256((account.username + secret).encode('utf-8')).hexdigest() == request.COOKIES['username']:
-                return HttpResponse('log in as ' + account.username)  # 跳轉  還沒寫
-    except KeyError:
-        pass
+    if str(request.user) != "AnonymousUser":
+        return HttpResponseRedirect(HOME_PAGE_URL)
+    if request.method == 'POST':
+        username = request.POST.get("username")
+        password = request.POST.get("password")
+        user = auth.authenticate(username=username, password=password)
+        if user is not None and user.is_active:
+            auth.login(request, user)
 
-    # 沒有登入救回傳正常的登入頁面
-    return render(request, "login/login.html")
+            if request.POST.get('next'):
+                return HttpResponseRedirect(request.POST.get('next'))
+            return HttpResponseRedirect(HOME_PAGE_URL)
+        else:
+            return render(request, LOGIN_PAGE)
+    else:
+        context = dict()
+        if request.GET.get('next'):
+            context = {'next': request.GET.get('next')}
+        return render(request, LOGIN_PAGE, context)
 
 
-def login_check(request):
-    '''
-    檢查使用者 確認正確使用者
-    '''
-    username = request.POST.get("username")
-    password_sha256 = hashlib.sha256(request.POST.get(
-        "password").encode(encoding='utf-8')).hexdigest()
-    account = get_object_or_404(Account, username=username)
-    if account.password_sha256 == password_sha256:
-        response = HttpResponse("login success as " + username)
-        response.set_cookie('username', value=hashlib.sha256((
-            username + secret).encode('utf-8')).hexdigest())
-        return response
-    return HttpResponse('LOGIN FAILD')
+@login_required(login_url=LOGIN_PAGE_URL)
+def login_require_page(request):
+    """
+    測試登入權限
+    """
+    return render(request, LOGIN_REQUIRED_PAGE)
 
-# rigister
+
+def logout(request):
+    """
+    設定 cookeis username 為 anonymous
+    """
+    auth.logout(request)
+    return HttpResponseRedirect('/web/index')
 
 
 def register(request):
     '''
-    密碼還沒做hash設定
+    註冊
     '''
     if request.method == 'POST':
-        username = request.POST.get("username")
-        password_sha256 = hashlib.sha256(request.POST.get(
-            "password").encode(encoding='utf-8')).hexdigest()
-        name = request.POST.get("name")
-        if(username == ''or password_sha256 == '' or name == ''):
-            return HttpResponse('欄位不能為空白')
         try:
-            Account.objects.create(
-                username=username, password_sha256=password_sha256, name=name)
+            username = request.POST.get("username")
+            password = request.POST.get("password")
+            password_repeat = request.POST.get("password_repeat")
+            nickname = request.POST.get("nickname")
+            email = request.POST.get("email")
+            if password != password_repeat:
+                raise Exception("密碼前後不一致")
+            if username == '' or password == '' or nickname == '':
+                raise Exception("輸入空白值")
+            account = Account.objects._create_user(
+                username, email, password, nickname=nickname)
+
         except IntegrityError:
             return HttpResponse('存在相同用戶名')
+        except Exception as e:
+            return HttpResponse(e)
+        return HttpResponse('success as ' + account.username)
 
-        return HttpResponse('註冊成功')
-
-    return render(request, 'register/register.html')
+    return render(request, REGISTER_PAGE)
