@@ -1,8 +1,10 @@
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import render, get_object_or_404,render_to_response
 from django.http import HttpResponse, HttpResponseRedirect
 from django.db.utils import IntegrityError
 from django.contrib.auth.decorators import login_required
 from django.contrib import auth
+from . import check_code
+from io import BytesIO
 
 from web.models import Account
 # Create your views here.
@@ -77,6 +79,9 @@ def register(request):
                 raise Exception("密碼前後不一致")
             if username == '' or password == '' or nickname == '':
                 raise Exception("輸入空白值")
+            code = request.POST.get('code','')
+            if code != request.session.get('check_code','error'):
+                raise Exception("驗證碼輸入錯誤")
             account = Account.objects._create_user(
                 username, email, password, nickname=nickname)
 
@@ -87,3 +92,11 @@ def register(request):
         return HttpResponse('success as ' + account.username)
 
     return render(request, REGISTER_PAGE)
+
+def create_code_img(request):
+    #在記憶體中空出位置，存放產生的圖片
+    f = BytesIO()
+    img,code = check_code.create_code()
+    request.session['check_code'] = code
+    img.save(f,'PNG')
+    return HttpResponse(f.getvalue())

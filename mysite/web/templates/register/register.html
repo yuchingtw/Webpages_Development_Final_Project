@@ -21,8 +21,19 @@
         <br> email
         <input type="text" name="email" id="email">
         <br>
+        <img id="check_code_img" src="create_code/" onclick="refresh_check_code(this)">
+        <input type="text" name="code">
+        <br>
         <input type="submit" value="送出">
     </form>
+    
+    
+    <script>
+        function refresh_check_code(ths) {
+            ths.src += '?';
+            //src後面+問號會自動刷新驗證碼img的src
+    }
+    </script>
 </body>
 
 </html>
