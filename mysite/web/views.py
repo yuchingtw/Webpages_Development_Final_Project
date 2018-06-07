@@ -6,7 +6,7 @@ from django.contrib import auth
 from . import check_code
 from io import BytesIO
 
-from web.models import Account
+from web.models import Account, Video
 # Create your views here.
 HOME_PAGE = 'index.html'
 HOME_PAGE_URL = "/web/index/"
@@ -14,7 +14,7 @@ LOGIN_PAGE = 'login/login.html'
 LOGIN_PAGE_URL = "/web/login/"
 REGISTER_PAGE = 'register/register.html'
 LOGIN_REQUIRED_PAGE = 'logrequirePage.html'
-UPLOAD_URL = '/web/uploadvideo/'
+UPLOAD_PAGE = 'videoupload.html'
 
 
 def index(request):
@@ -59,7 +59,7 @@ def login_require_page(request):
 
 def logout(request):
     """
-    設定 cookeis username 為 anonymous
+    內建方法登出
     """
     auth.logout(request)
     return HttpResponseRedirect('/web/index')
@@ -104,5 +104,17 @@ def create_code_img(request):
     return HttpResponse(f.getvalue())
 
 
+@login_required(login_url=LOGIN_PAGE_URL)
 def upload_video(request):
-    return render(request, UPLOAD_URL)
+    if request.method == 'POST':
+        user = get_object_or_404(Account, username=request.user)
+        up_video = Video()
+        up_video.title = request.POST.get("title")
+        up_video.photo = request.FILES["image"]
+        up_video.video_path = request.FILES["videofile"]
+        up_video.content = request.POST.get("description")
+        up_video.classify = request.POST.get("tag")
+        up_video.vidoe_length = 0
+        up_video.save()
+
+    return render(request, UPLOAD_PAGE)
