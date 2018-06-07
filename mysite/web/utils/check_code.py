@@ -3,8 +3,6 @@ import string
 from PIL import Image, ImageDraw, ImageFont, ImageFilter
 
 # 生成隨機字串
-
-
 def getRandomChar():
     # 產生一串小寫字母+數字
     ran = string.ascii_lowercase+string.digits
@@ -14,8 +12,6 @@ def getRandomChar():
     return char
 
 # 回傳隨機顏色
-
-
 def getRandomColor():
     return (random.randint(50, 150), random.randint(50, 150), random.randint(50, 150))
 
@@ -26,14 +22,9 @@ def create_code():
     img = Image.new('RGB', (120, 30), (255, 255, 255))
     # 建立畫布
     draw = ImageDraw.Draw(img)
-<<<<<<< HEAD:mysite/web/utils/check_code.py
     #設置字體
     font = ImageFont.truetype('C:\Windows\Fonts\Arial.ttf', 30)
-=======
-    # 設置字體
-    font = ImageFont.truetype('Arial.ttf', 25)
->>>>>>> 873451fdfe00eabd416b3f83e9cc4267fadcd75b:mysite/web/check_code.py
-
+    
     code = getRandomChar()
     # 把產生的隨機字串畫在畫布上
     for t in range(4):
@@ -47,14 +38,9 @@ def create_code():
 
     # 使用模糊濾鏡讓圖片模糊
     img = img.filter(ImageFilter.BLUR)
-<<<<<<< HEAD:mysite/web/utils/check_code.py
     #測試用的save
     #img.save(''.join(code)+'.jpg','jpeg')
     return img,code
 
 if __name__ == '__main__':
     create_code()
-=======
-    # img.save(''.join(code)+'.jpg','jpeg')
-    return img, code
->>>>>>> 873451fdfe00eabd416b3f83e9cc4267fadcd75b:mysite/web/check_code.py
