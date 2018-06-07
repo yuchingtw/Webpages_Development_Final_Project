@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>文章列表</title>
+    </head>
+    <body>
+        <table>
+            <!--表單標籤-->
+            <thead>
+                <tr>
+                    <th>標題</th>
+                    <th>點擊數</th>
+                    <th>上傳日期</th>   
+                </tr>
+            </thead>
+            <!--文章-->
+            <tbody>
+                {% for post in page.object_list %}
+                <tr>
+                    <td><a href="/web/postShow?q={{post.upid}}">{{post.title}}</a></td>
+                    <td>{{post.click_times}}</td>
+                    <td>{{post.publish_time}}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        <!--換頁標籤-->
+        <div>
+            <!--判斷有沒有上一頁-->
+            {% if page.has_previous %}
+                <a href="/web/postList?p={{page.previous_page_number}}">上一頁</a>
+            {% else %}
+                上一頁
+            {% endif %}
+
+            {% for i in page.paginator.page_range %}
+                <a href="/web/postList?p={{i}}">{{i}}</a>
+            {% endfor %}
+            
+            <!--判斷有沒有下一頁-->
+            {% if page.has_next %}
+                <a href="/web/postList?p={{page.next_page_number}}">下一頁</a>
+            {% else %}
+                下一頁
+            {% endif %}
+        </div>
+    </body>
+</html>

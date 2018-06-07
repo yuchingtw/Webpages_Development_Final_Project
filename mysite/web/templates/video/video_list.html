@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>影片列表</title>
+    </head>
+    <body>
+        <table>
+            <!--表單標籤-->
+            <thead>
+                <tr>
+                    <th>縮圖</th>
+                    <th>標題</th>
+                    <th>影片長度</th>
+                    <th>觀看次數</th>
+                    <th>上傳日期</th>   
+                </tr>
+            </thead>
+            <!--影片-->
+            <tbody>
+                {% for video in page.object_list %}
+                <tr>
+                    <td>{{video.photo}}</td>
+                    <td><a href="/web/videoShow?q={{video.uvid}}">{{video.title}}</a></td>
+                    <td>{{video.video_length}}</td>
+                    <td>{{video.watched_time}}</td>
+                    <td>{{video.publish_time}}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        <!--換頁標籤-->
+        <div>
+            <!--判斷有沒有上一頁-->
+            {% if page.has_previous %}
+                <a href="/web/videoList?p={{page.previous_page_number}}">上一頁</a>
+            {% else %}
+                上一頁
+            {% endif %}
+
+            {% for i in page.paginator.page_range %}
+                <a href="/web/videoList?p={{i}}">{{i}}</a>
+            {% endfor %}
+            
+            <!--判斷有沒有下一頁-->
+            {% if page.has_next %}
+                <a href="/web/videoList?p={{page.next_page_number}}">下一頁</a>
+            {% else %}
+                下一頁
+            {% endif %}
+        </div>
+    </body>
+</html>

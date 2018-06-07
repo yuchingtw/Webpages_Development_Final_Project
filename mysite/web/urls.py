@@ -10,5 +10,9 @@ urlpatterns = [
     url(r'index/', views.index, name="index"),
     url(r'register/create_code/',views.create_code_img,name="create_code"),
     url(r'uploadvideo/', views.upload_video),
+    url(r'postShow/', views.post_show, name="post_show"),
+    url(r'postList/', views.post_list, name="post_list"),
+    url(r'videoShow/', views.video_show, name="video_show"),
+    url(r'videoList/', views.video_list, name="video_list"),
 
 ]

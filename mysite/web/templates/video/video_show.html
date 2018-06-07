@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+    <!--只有單純顯示而已，功能尚未完成-->
+    <head>
+        <title>{{video.title}}</title>
+    </head>
+    <body>
+       <span>
+            影片：<br>
+            {{video.video_path}}
+            <p>影片長度：{{video.video_length}}</p>
+       </span><br>
+       <textarea>{{video.content}}</textarea>
+       <br>
+       <p>喜歡人數：{{video.like}} 人  不喜歡人數：{{video.dislike}} 人</p>
+       <p>觀看次數：{{video.watched_time}} 次</p>
+       <p>上傳日期：{{video.publish_time}}</p>
+    </body>
+</html>

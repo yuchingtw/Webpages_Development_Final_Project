@@ -5,15 +5,8 @@ from django.contrib.auth.decorators import login_required
 from django.contrib import auth
 from web.utils import check_code
 from io import BytesIO
-<<<<<<< HEAD
-from web.models import Account
-import os,shutil
-
-
-=======
-
-from web.models import Account, Video
->>>>>>> 873451fdfe00eabd416b3f83e9cc4267fadcd75b
+from web.models import *
+from django.core.paginator import Paginator,EmptyPage,PageNotAnInteger
 # Create your views here.
 HOME_PAGE = 'index.html'
 HOME_PAGE_URL = "/web/index/"
@@ -22,6 +15,10 @@ LOGIN_PAGE_URL = "/web/login/"
 REGISTER_PAGE = 'register/register.html'
 LOGIN_REQUIRED_PAGE = 'logrequirePage.html'
 UPLOAD_PAGE = 'videoupload.html'
+POST_SHOW_PAGE='post/post_show.html'
+POST_LIST_PAGE='post/post_list.html'
+VIDEO_SHOW_PAGE='video/video_show.html'
+VIDEO_LIST_PAGE='video/video_list.html'
 
 
 def index(request):
@@ -125,3 +122,48 @@ def upload_video(request):
         up_video.save()
 
     return render(request, UPLOAD_PAGE)
+
+
+"""
+文章列表+顯示
+"""
+def post_show(request):
+    upid = request.GET.get('q')
+    post= Post.objects.get(upid=upid)
+    return render(request,POST_SHOW_PAGE,{'post':post})
+
+
+def post_list(request):
+    post=Post.objects.all()
+    current_page=request.GET.get('p')
+    paginator=Paginator(post,10) #每頁顯示10筆
+    try:
+        page=paginator.page(current_page) #根據current_page顯示頁數
+    except EmptyPage as e:
+        page = paginator.page(1) #如果get到了沒有的頁數則顯示第一頁
+    except PageNotAnInteger as e:
+        page = paginator.page(1)  #傳入非數字也顯示第一頁  
+
+    return render(request,POST_LIST_PAGE,{'page':page})
+
+"""
+影片列表+顯示
+"""
+def video_show(request):
+    uvid = request.GET.get('q')
+    video= Video.objects.get(uvid=uvid)
+    return render(request,VIDEO_SHOW_PAGE,{'video':video})
+
+
+def video_list(request):
+    video=Video.objects.all()
+    current_page=request.GET.get('p')
+    paginator=Paginator(video,10) #每頁顯示10筆
+    try:
+        page=paginator.page(current_page) #根據current_page顯示頁數
+    except EmptyPage as e:
+        page = paginator.page(1) #如果get到了沒有的頁數則顯示第一頁
+    except PageNotAnInteger as e:
+        page = paginator.page(1)  #傳入非數字也顯示第一頁  
+
+    return render(request,VIDEO_LIST_PAGE,{'page':page})
