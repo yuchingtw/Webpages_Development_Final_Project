@@ -3,10 +3,12 @@ from django.http import HttpResponse, HttpResponseRedirect
 from django.db.utils import IntegrityError
 from django.contrib.auth.decorators import login_required
 from django.contrib import auth
-from . import check_code
+from web.utils import check_code
 from io import BytesIO
-
 from web.models import Account
+import os,shutil
+
+
 # Create your views here.
 HOME_PAGE = 'index.html'
 HOME_PAGE_URL = "/web/index/"
@@ -92,6 +94,7 @@ def register(request):
         return HttpResponse('success as ' + account.username)
 
     return render(request, REGISTER_PAGE)
+
 
 def create_code_img(request):
     #在記憶體中空出位置，存放產生的圖片
