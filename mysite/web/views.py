@@ -1,14 +1,19 @@
-from django.shortcuts import render, get_object_or_404,render_to_response
+from django.shortcuts import render, get_object_or_404, render_to_response
 from django.http import HttpResponse, HttpResponseRedirect
 from django.db.utils import IntegrityError
 from django.contrib.auth.decorators import login_required
 from django.contrib import auth
 from web.utils import check_code
 from io import BytesIO
+<<<<<<< HEAD
 from web.models import Account
 import os,shutil
 
 
+=======
+
+from web.models import Account, Video
+>>>>>>> 873451fdfe00eabd416b3f83e9cc4267fadcd75b
 # Create your views here.
 HOME_PAGE = 'index.html'
 HOME_PAGE_URL = "/web/index/"
@@ -16,6 +21,7 @@ LOGIN_PAGE = 'login/login.html'
 LOGIN_PAGE_URL = "/web/login/"
 REGISTER_PAGE = 'register/register.html'
 LOGIN_REQUIRED_PAGE = 'logrequirePage.html'
+UPLOAD_PAGE = 'videoupload.html'
 
 
 def index(request):
@@ -60,7 +66,7 @@ def login_require_page(request):
 
 def logout(request):
     """
-    設定 cookeis username 為 anonymous
+    內建方法登出
     """
     auth.logout(request)
     return HttpResponseRedirect('/web/index')
@@ -81,8 +87,8 @@ def register(request):
                 raise Exception("密碼前後不一致")
             if username == '' or password == '' or nickname == '':
                 raise Exception("輸入空白值")
-            code = request.POST.get('code','')
-            if code != request.session.get('check_code','error'):
+            code = request.POST.get('code', '')
+            if code != request.session.get('check_code', 'error'):
                 raise Exception("驗證碼輸入錯誤")
             account = Account.objects._create_user(
                 username, email, password, nickname=nickname)
@@ -97,9 +103,25 @@ def register(request):
 
 
 def create_code_img(request):
-    #在記憶體中空出位置，存放產生的圖片
+    # 在記憶體中空出位置，存放產生的圖片
     f = BytesIO()
-    img,code = check_code.create_code()
+    img, code = check_code.create_code()
     request.session['check_code'] = code
-    img.save(f,'PNG')
+    img.save(f, 'PNG')
     return HttpResponse(f.getvalue())
+
+
+@login_required(login_url=LOGIN_PAGE_URL)
+def upload_video(request):
+    if request.method == 'POST':
+        user = get_object_or_404(Account, username=request.user)
+        up_video = Video()
+        up_video.title = request.POST.get("title")
+        up_video.photo = request.FILES["image"]
+        up_video.video_path = request.FILES["videofile"]
+        up_video.content = request.POST.get("description")
+        up_video.classify = request.POST.get("tag")
+        up_video.vidoe_length = 0
+        up_video.save()
+
+    return render(request, UPLOAD_PAGE)

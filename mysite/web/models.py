@@ -5,19 +5,26 @@ from django.db import models
 
 # Create your models here.
 
+IMAGEFILE_PATH = "videoPhotos"
+VIDEO_PATH = "videos"
+
 
 class Video(models.Model):
     uvid = models.UUIDField(
         primary_key=True, editable=False, default=uuid.uuid4)
     title = models.CharField(max_length=100)
+    photo = models.ImageField(upload_to=IMAGEFILE_PATH)
+    video_path = models.FileField(upload_to=VIDEO_PATH)
     content = models.TextField(blank=True)
     classify = models.CharField(max_length=20)
-    click_times = models.DecimalField(max_digits=20, decimal_places=0)
+    click_times = models.DecimalField(
+        max_digits=20, decimal_places=0, default=0)
     vidoe_length = models.DecimalField(max_digits=20, decimal_places=0)
     publish_time = models.DateTimeField(auto_now_add=True)
-    watched_time = models.DecimalField(max_digits=20, decimal_places=0)
-    like = models.DecimalField(max_digits=20, decimal_places=0)
-    dislike = models.DecimalField(max_digits=20, decimal_places=0)
+    watched_time = models.DecimalField(
+        max_digits=20, decimal_places=0, default=0)
+    like = models.DecimalField(max_digits=20, decimal_places=0, default=0)
+    dislike = models.DecimalField(max_digits=20, decimal_places=0, default=0)
 
     def __str__(self):
         return self.title

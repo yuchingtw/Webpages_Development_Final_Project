@@ -2,3 +2,4 @@
 cmd.exe
 *.pyc
 *.sqlite3
+mysite/res/*
