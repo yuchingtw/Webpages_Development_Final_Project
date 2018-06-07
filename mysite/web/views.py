@@ -1,4 +1,4 @@
-from django.shortcuts import render, get_object_or_404,render_to_response
+from django.shortcuts import render, get_object_or_404, render_to_response
 from django.http import HttpResponse, HttpResponseRedirect
 from django.db.utils import IntegrityError
 from django.contrib.auth.decorators import login_required
@@ -14,6 +14,7 @@ LOGIN_PAGE = 'login/login.html'
 LOGIN_PAGE_URL = "/web/login/"
 REGISTER_PAGE = 'register/register.html'
 LOGIN_REQUIRED_PAGE = 'logrequirePage.html'
+UPLOAD_URL = '/web/uploadvideo/'
 
 
 def index(request):
@@ -79,8 +80,8 @@ def register(request):
                 raise Exception("密碼前後不一致")
             if username == '' or password == '' or nickname == '':
                 raise Exception("輸入空白值")
-            code = request.POST.get('code','')
-            if code != request.session.get('check_code','error'):
+            code = request.POST.get('code', '')
+            if code != request.session.get('check_code', 'error'):
                 raise Exception("驗證碼輸入錯誤")
             account = Account.objects._create_user(
                 username, email, password, nickname=nickname)
@@ -93,10 +94,15 @@ def register(request):
 
     return render(request, REGISTER_PAGE)
 
+
 def create_code_img(request):
-    #在記憶體中空出位置，存放產生的圖片
+    # 在記憶體中空出位置，存放產生的圖片
     f = BytesIO()
-    img,code = check_code.create_code()
+    img, code = check_code.create_code()
     request.session['check_code'] = code
-    img.save(f,'PNG')
+    img.save(f, 'PNG')
     return HttpResponse(f.getvalue())
+
+
+def upload_video(request):
+    return render(request, UPLOAD_URL)
