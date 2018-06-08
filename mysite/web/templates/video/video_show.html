@@ -1,13 +1,21 @@
 <!DOCTYPE html>
 <html>
-    <!--只有單純顯示而已，功能尚未完成-->
+    <!--用jw-player播放影片，key是幹來的記得別丟掉-->
     <head>
         <title>{{video.title}}</title>
+        <script type="text/javascript" src="/res/jwplayer/jwplayer.js"></script>
     </head>
     <body>
        <span>
-            影片：<br>
-            {{video.video_path}}
+            影片：<br><br>
+            <div id="myVideo">影片讀取中 ...</div>
+            <script type="text/javascript">
+                jwplayer.key = "rqQQ9nLfWs+4Fl37jqVWGp6N8e2Z0WldRIKhFg==";
+                jwplayer("myVideo").setup({
+                file: "{{video.video_path.url}}",
+                image: "{{video.photo.url}}"
+                });
+            </script>
             <p>影片長度：{{video.video_length}}</p>
        </span><br>
        <textarea>{{video.content}}</textarea>

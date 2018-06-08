@@ -97,8 +97,10 @@ def register(request):
         return HttpResponse('success as ' + account.username)
 
     return render(request, REGISTER_PAGE)
-
-
+    
+"""
+驗證碼產生
+"""
 def create_code_img(request):
     # 在記憶體中空出位置，存放產生的圖片
     f = BytesIO()

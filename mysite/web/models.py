@@ -13,15 +13,8 @@ class Video(models.Model):
     uvid = models.UUIDField(
         primary_key=True, editable=False, default=uuid.uuid4)
     title = models.CharField(max_length=100)
-
-    '''
-    photo和video_path有問題，暫時先註解掉，用textfield代替，改掉後記得要再makemigrations
-    '''
-    #photo = models.ImageField(upload_to=IMAGEFILE_PATH)
-    #video_path = models.FileField(upload_to=VIDEO_PATH)
-    
-    photo = models.TextField(blank=True)
-    video_path = models.TextField(blank=True)
+    photo = models.ImageField(upload_to=IMAGEFILE_PATH)
+    video_path = models.FileField(upload_to=VIDEO_PATH)
     content = models.TextField(blank=True)
     classify = models.CharField(max_length=20)
     click_times = models.DecimalField(

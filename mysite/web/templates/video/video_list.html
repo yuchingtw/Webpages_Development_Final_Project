@@ -19,7 +19,7 @@
             <tbody>
                 {% for video in page.object_list %}
                 <tr>
-                    <td>{{video.photo}}</td>
+                    <td><img src="{{video.photo.url}}" style="width:30%;"></td>
                     <td><a href="/web/videoShow?q={{video.uvid}}">{{video.title}}</a></td>
                     <td>{{video.video_length}}</td>
                     <td>{{video.watched_time}}</td>
