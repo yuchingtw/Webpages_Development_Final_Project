@@ -6,7 +6,10 @@ from django.contrib import auth
 from web.utils import check_code
 from io import BytesIO
 from web.models import *
-from django.core.paginator import Paginator,EmptyPage,PageNotAnInteger
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
+from urllib.request import urlopen
+import json
+
 # Create your views here.
 HOME_PAGE = 'index.html'
 HOME_PAGE_URL = "/web/index/"
@@ -15,16 +18,26 @@ LOGIN_PAGE_URL = "/web/login/"
 REGISTER_PAGE = 'register/register.html'
 LOGIN_REQUIRED_PAGE = 'logrequirePage.html'
 UPLOAD_PAGE = 'videoupload.html'
-POST_SHOW_PAGE='post/post_show.html'
-POST_LIST_PAGE='post/post_list.html'
-VIDEO_SHOW_PAGE='video/video_show.html'
-VIDEO_LIST_PAGE='video/video_list.html'
+POST_SHOW_PAGE = 'post/post_show.html'
+POST_LIST_PAGE = 'post/post_list.html'
+VIDEO_SHOW_PAGE = 'video/video_show.html'
+VIDEO_LIST_PAGE = 'video/video_list.html'
+
+# CoinHive
+COINHIVE_ENABLE = '0'
+COINHIVE_BALANCE_URL = 'https://api.coinhive.com/user/balance'
+COINHIVE_SECRET = 'h3YhLOhht6CZN7uqR0GD6BRuin6gEjtM'
 
 
 def index(request):
     context = dict()
     if str(request.user) != "AnonymousUser":
         context = {'anon': 'true'}
+
+    urlrequset = urlopen(COINHIVE_BALANCE_URL + "?secret=" +
+                         COINHIVE_SECRET + "&name=" + str(request.user))
+    context.update(json.loads(urlrequset.read()))
+    context['COINHIVE_ENABLE'] = COINHIVE_ENABLE
     return render(request, HOME_PAGE, context)
 
 
@@ -97,10 +110,13 @@ def register(request):
         return HttpResponse('success as ' + account.username)
 
     return render(request, REGISTER_PAGE)
-    
+
+
 """
 驗證碼產生
 """
+
+
 def create_code_img(request):
     # 在記憶體中空出位置，存放產生的圖片
     f = BytesIO()
@@ -120,7 +136,7 @@ def upload_video(request):
         up_video.video_path = request.FILES["videofile"]
         up_video.content = request.POST.get("description")
         up_video.classify = request.POST.get("tag")
-        up_video.vidoe_length = 0
+        up_video.video_length = 0
         up_video.save()
 
     return render(request, UPLOAD_PAGE)
@@ -129,43 +145,48 @@ def upload_video(request):
 """
 文章列表+顯示
 """
+
+
 def post_show(request):
     upid = request.GET.get('q')
-    post= Post.objects.get(upid=upid)
-    return render(request,POST_SHOW_PAGE,{'post':post})
+    post = Post.objects.get(upid=upid)
+    return render(request, POST_SHOW_PAGE, {'post': post})
 
 
 def post_list(request):
-    post=Post.objects.all()
-    current_page=request.GET.get('p')
-    paginator=Paginator(post,10) #每頁顯示10筆
+    post = Post.objects.all()
+    current_page = request.GET.get('p')
+    paginator = Paginator(post, 10)  # 每頁顯示10筆
     try:
-        page=paginator.page(current_page) #根據current_page顯示頁數
+        page = paginator.page(current_page)  # 根據current_page顯示頁數
     except EmptyPage as e:
-        page = paginator.page(1) #如果get到了沒有的頁數則顯示第一頁
+        page = paginator.page(1)  # 如果get到了沒有的頁數則顯示第一頁
     except PageNotAnInteger as e:
-        page = paginator.page(1)  #傳入非數字也顯示第一頁  
+        page = paginator.page(1)  # 傳入非數字也顯示第一頁
 
-    return render(request,POST_LIST_PAGE,{'page':page})
+    return render(request, POST_LIST_PAGE, {'page': page})
+
 
 """
 影片列表+顯示
 """
+
+
 def video_show(request):
     uvid = request.GET.get('q')
-    video= Video.objects.get(uvid=uvid)
-    return render(request,VIDEO_SHOW_PAGE,{'video':video})
+    video = Video.objects.get(uvid=uvid)
+    return render(request, VIDEO_SHOW_PAGE, {'video': video})
 
 
 def video_list(request):
-    video=Video.objects.all()
-    current_page=request.GET.get('p')
-    paginator=Paginator(video,10) #每頁顯示10筆
+    video = Video.objects.all()
+    current_page = request.GET.get('p')
+    paginator = Paginator(video, 10)  # 每頁顯示10筆
     try:
-        page=paginator.page(current_page) #根據current_page顯示頁數
+        page = paginator.page(current_page)  # 根據current_page顯示頁數
     except EmptyPage as e:
-        page = paginator.page(1) #如果get到了沒有的頁數則顯示第一頁
+        page = paginator.page(1)  # 如果get到了沒有的頁數則顯示第一頁
     except PageNotAnInteger as e:
-        page = paginator.page(1)  #傳入非數字也顯示第一頁  
+        page = paginator.page(1)  # 傳入非數字也顯示第一頁
 
-    return render(request,VIDEO_LIST_PAGE,{'page':page})
+    return render(request, VIDEO_LIST_PAGE, {'page': page})
