@@ -9,6 +9,7 @@ from web.models import *
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from urllib.request import urlopen
 import json
+from django.views.decorators.csrf import csrf_exempt
 
 # Create your views here.
 HOME_PAGE = 'index.html'
@@ -45,6 +46,7 @@ def login(request):
     """
     登入頁面顯示 跳轉首頁 這也還沒寫完
     """
+    print(request.POST)
     if str(request.user) != "AnonymousUser":
         return HttpResponseRedirect(HOME_PAGE_URL)
     if request.method == 'POST':
@@ -93,10 +95,6 @@ def register(request):
             password_repeat = request.POST.get("password_repeat")
             nickname = request.POST.get("nickname")
             email = request.POST.get("email")
-            if password != password_repeat:
-                raise Exception("密碼前後不一致")
-            if username == '' or password == '' or nickname == '':
-                raise Exception("輸入空白值")
             code = request.POST.get('code', '')
             if code != request.session.get('check_code', 'error'):
                 raise Exception("驗證碼輸入錯誤")
@@ -111,6 +109,26 @@ def register(request):
 
     return render(request, REGISTER_PAGE)
 
+
+@csrf_exempt
+def verify_username(request):
+    if request.method == 'POST':
+        data = json.loads(request.body.decode('utf-8'))
+        username = data.get("username")
+        # QuerySet is null
+        if(Account.objects.filter(username=username).count() == 0):
+            response = "null"
+        else:
+            response = "exist"
+
+    return HttpResponse(json.dumps(response), content_type="application/json")
+
+
+"""
+    return HttpResponse(
+        json.dumps(),
+        content_type='application/json')
+"""
 
 """
 驗證碼產生
