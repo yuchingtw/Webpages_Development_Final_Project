@@ -1,39 +1,73 @@
-<!DOCTYPE html>
+<!DOCTYPE html> {% load staticfiles %}
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Document</title>
+  <!-- Required meta tags -->
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+  <!-- Bootstrap CSS -->
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
+    crossorigin="anonymous">
+
+  <!-- Google Font -->
+  <link href="http://fonts.googleapis.com/earlyaccess/notosanstc.css" rel="stylesheet">
+
+  <!-- Custom styles for this template -->
+  <link href="{% static 'css/form_input.css' %}" rel="stylesheet">
+
+  <title>註冊</title>
 </head>
 
 <body>
-    <form action="#" method="POST">
-        {% csrf_token %} 帳號
-        <input type="text" name="username" id="username">
-        <br> 密碼
-        <input type="password" name="password" id="password">
-        <br> 重複輸入密碼
-        <input type="password" name="password_repeat" id="password_repeat">
-        <br> 暱稱
-        <input type="text" name="nickname" id="nickname">
-        <br> email
-        <input type="text" name="email" id="email">
-        <br>
-        <img id="check_code_img" src="/web/create_code/" style="width:15%; height:15% ;" onclick="refresh_check_code(this)">
-        <input type="text" name="code">（點擊圖片刷新驗證碼）
-        <br>
-        <input type="submit" value="送出">
-    </form>
-    
-    
-    <script>
-        function refresh_check_code(ths) {
-            ths.src += '?';
-            //src後面+問號會自動刷新驗證碼img的src
+
+  <form class="form-signin" action="#" method="post">
+    {% csrf_token %}
+
+    <div class="text-center mb-4">
+      <h1 class="h3 mb-3 font-weight-normal">註冊</h1>
+      <p>快來註冊ㄅ</p>
+    </div>
+
+    <div class="form-label-group ">
+      <input type="text" name="username" id="username" class="form-control" placeholder="帳號" required autofocus>
+      <label for="username">帳號</label>
+    </div>
+
+    <div class="form-label-group ">
+      <input type="password" name="password" id="password" class="form-control " placeholder="Password" required>
+      <label for="password">密碼</label>
+    </div>
+
+    <div class="form-label-group ">
+      <input type="password" name="password_repeat" id="password_repeat" class="form-control " placeholder="Password" required>
+      <label for="password_repeat">重複輸入密碼</label>
+    </div>
+
+    <div class="form-label-group ">
+      <input type="text" name="nickname" id="nickname" class="form-control" placeholder="暱稱" required>
+      <label for="nickname">暱稱</label>
+    </div>
+
+    <div class="form-label-group ">
+      <input type="text" name="email" id="email" class="form-control" placeholder="Email" required>
+      <label for="email">E-mail</label>
+    </div>
+
+    <div class="form-label-group ">
+      <img src="/web/create_code/" onclick="refresh_check_code(this)">
+      <input type="text" name="code" id="code"> (點擊圖片刷新驗證碼) </div>
+
+    <button class="btn btn-lg btn-primary btn-block" type="submit">送出</button>
+  </form>
+
+  <script>
+    function refresh_check_code(ths) {
+      ths.src += '?';
+      //src後面+問號會自動刷新驗證碼img的src
     }
-    </script>
+  </script>
+
 </body>
 
 </html>
