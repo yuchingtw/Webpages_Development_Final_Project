@@ -130,8 +130,9 @@ def verify_username(request):
         if(Account.objects.filter(username=username).count() == 0):
             response = "null"
         else:
-            resopnse = "exist"
+            response = "exist"
 
+    print(response)
     return HttpResponse(json.dumps(response), content_type="application/json")
 
 
