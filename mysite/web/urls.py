@@ -17,4 +17,6 @@ urlpatterns = [
     url(r'videoShow/', views.video_show, name="video_show"),
     url(r'videoList/', views.video_list, name="video_list"),
     url(r'verify_username/?', views.verify_username, name="verify_username"),
+
+    url(r'dashboard/?', views.dashboard, name="dashboard")
 ]

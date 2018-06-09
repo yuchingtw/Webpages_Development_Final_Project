@@ -24,6 +24,7 @@ POST_LIST_PAGE = 'post/post_list.html'
 POST_NEW_PAGE = 'post/post_new.html'
 VIDEO_SHOW_PAGE = 'video/video_show.html'
 VIDEO_LIST_PAGE = 'video/video_list.html'
+DASHBOARD_PAGE = 'dashboard/dashboard.html'
 
 # CoinHive
 COINHIVE_ENABLE = '0'
@@ -176,6 +177,11 @@ def new_post(request):
         return HttpResponseRedirect('/web/index')
 
     return render(request, POST_NEW_PAGE, context)
+
+
+@login_required(login_url=LOGIN_PAGE_URL)
+def dashboard(request):
+    return render(request, DASHBOARD_PAGE)
 
 
 """
