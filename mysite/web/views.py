@@ -37,10 +37,19 @@ def index(request):
     if str(request.user) != "AnonymousUser":
         context = {'anon': 'true'}
 
+    post = Post.objects.order_by('-publish_time')[:6]
+    video = Video.objects.order_by('-publish_time')[:6]
+    post_pop = Post.objects.order_by('-like')[:6]
+    video_pop = Video.objects.order_by('-like')[:6]
+
+    context.update({'post': post, 'video': video,
+                    'post_pop': post_pop, 'video_pop': video_pop})
+
     urlrequset = urlopen(COINHIVE_BALANCE_URL + "?secret=" +
                          COINHIVE_SECRET + "&name=" + str(request.user))
     context.update(json.loads(urlrequset.read()))
     context['COINHIVE_ENABLE'] = COINHIVE_ENABLE
+
     return render(request, HOME_PAGE, context)
 
 
