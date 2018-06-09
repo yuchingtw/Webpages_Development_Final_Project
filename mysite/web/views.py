@@ -155,6 +155,29 @@ def upload_video(request):
     return render(request, UPLOAD_PAGE)
 
 
+@login_required(login_url=LOGIN_PAGE_URL)
+def new_post(request):
+
+    context = dict()
+    if str(request.user) != "AnonymousUser":
+        context = {'anon': 'true'}
+
+    if request.method == 'POST':
+        user = get_object_or_404(Account, username=request.user)
+        new_post = Post()
+        new_post.title = request.POST.get("title")
+        new_post.content = request.POST.get("content")
+        new_post.classify = request.POST.get("tag")
+        new_post.click_times = 0
+        new_post.watched_time = 0
+        new_post.like = 0
+        new_post.dislike = 0
+        new_post.save()
+        return HttpResponseRedirect('/web/index')
+
+    return render(request, POST_NEW_PAGE, context)
+
+
 """
 文章列表+顯示
 """
@@ -178,11 +201,6 @@ def post_list(request):
         page = paginator.page(1)  # 傳入非數字也顯示第一頁
 
     return render(request, POST_LIST_PAGE, {'page': page})
-
-
-@login_required(login_url=LOGIN_PAGE_URL)
-def post_new(request):
-    return render(request, POST_NEW_PAGE)
 
 
 """

@@ -43,7 +43,7 @@
 
       <div class="navbar-collapse offcanvas-collapse" id="navbarsDefault">
         <ul class="navbar-nav mr-auto">
-          <li class="nav-item active">
+          <li class="nav-item">
             <a class="nav-link" href="#">首頁
               <span class="sr-only">(current)</span>
             </a>
@@ -71,12 +71,14 @@
               <span class="sr-only">(current)</span>
             </a>
           </li>
-          <li class="nav-item">
+          <li class="nav-item active">
             <a class="nav-link" href="#">投稿</a>
           </li>
-          <form action="/web/logout" method="get">
-            <input class="btn btn-dark" type="submit" value="logout">
-          </form>
+          <li class="nav-item">
+            <form action="/web/logout" method="get">
+              <input class="btn btn-dark" type="submit" value="logout">
+            </form>
+          </li>
         </ul>
         {% else %}
         <form action="/web/login" method="get">
@@ -92,6 +94,15 @@
 
   <main role="main" class="container">
 
+    <form class="form-signin" action="#" method="post">
+      {% csrf_token %} 標題:
+      <input type="text" name="title" id="title">
+      <br> 內文
+      <input type="text" name="content" id="content">
+      <br> 標籤
+      <input type="text" name="tag" id="tag">
+      <input type="submit" value="送出">
+    </form>
 
   </main>
 

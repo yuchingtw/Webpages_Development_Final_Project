@@ -13,7 +13,7 @@ urlpatterns = [
     url(r'uploadvideo/', views.upload_video),
     url(r'postShow/', views.post_show, name="post_show"),
     url(r'postList/', views.post_list, name="post_list"),
-    url(r'postnew/', views.post_new, name="post_new"),
+    url(r'postnew/', views.new_post, name="new_post"),
     url(r'videoShow/', views.video_show, name="video_show"),
     url(r'videoList/', views.video_list, name="video_list"),
     url(r'verify_username/?', views.verify_username, name="verify_username"),
