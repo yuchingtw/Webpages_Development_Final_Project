@@ -125,12 +125,6 @@ def verify_username(request):
 
 
 """
-    return HttpResponse(
-        json.dumps(),
-        content_type='application/json')
-"""
-
-"""
 驗證碼產生
 """
 
