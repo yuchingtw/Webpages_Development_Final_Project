@@ -21,6 +21,7 @@ LOGIN_REQUIRED_PAGE = 'logrequirePage.html'
 UPLOAD_PAGE = 'videoupload.html'
 POST_SHOW_PAGE = 'post/post_show.html'
 POST_LIST_PAGE = 'post/post_list.html'
+POST_NEW_PAGE = 'post/post_new.html'
 VIDEO_SHOW_PAGE = 'video/video_show.html'
 VIDEO_LIST_PAGE = 'video/video_list.html'
 
@@ -119,7 +120,7 @@ def verify_username(request):
         if(Account.objects.filter(username=username).count() == 0):
             response = "null"
         else:
-            response = "exist"
+            resopnse = "exist"
 
     return HttpResponse(json.dumps(response), content_type="application/json")
 
@@ -177,6 +178,11 @@ def post_list(request):
         page = paginator.page(1)  # 傳入非數字也顯示第一頁
 
     return render(request, POST_LIST_PAGE, {'page': page})
+
+
+@login_required(login_url=LOGIN_PAGE_URL)
+def post_new(request):
+    return render(request, POST_NEW_PAGE)
 
 
 """
