@@ -8,6 +8,7 @@ from io import BytesIO
 from web.models import *
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from urllib.request import urlopen
+import requests as wtf
 import json
 from django.views.decorators.csrf import csrf_exempt
 from django.db.models import Q
@@ -32,6 +33,10 @@ POST_EDIT_PAGE = 'post/post_edit.html'
 POST_LIST_PAGE = 'post/post_list.html'
 POST_NEW_PAGE = 'post/post_new.html'
 DASHBOARD_PAGE = 'dashboard/dashboard.html'
+DASHBOARD_COIN_PAGE = 'dashboard/dashboard_coin.html'
+DASHBOARD_POSTS_PAGE = 'dashboard/dashboard_posts.html'
+DASHBOARD_PROFILE_PAGE = 'dashboard/dashboard_profile.html'
+DASHBOARD_VIDEOS_PAGE = 'dashboard/dashboard_videos.html'
 DASHBOARD_URL = '/dashboard'
 DASHBOARD_POSTSMANAGE_PAGE = 'dashboard/manage.html'
 SEARCH_RESULT_PAGE = 'searchresult.html'
@@ -41,6 +46,7 @@ SELF_INTRO_PAGE = 'self_intro.html'
 # CoinHive
 COINHIVE_ENABLE = '0'
 COINHIVE_BALANCE_URL = 'https://api.coinhive.com/user/balance'
+COINHIVE_WITHDRAW_URL = 'https://api.coinhive.com/user/withdraw'
 COINHIVE_SECRET = 'h3YhLOhht6CZN7uqR0GD6BRuin6gEjtM'
 
 
@@ -113,7 +119,7 @@ def register(request):
     '''
     註冊
     '''
-    context=dict()
+    context = dict()
     if request.method == 'POST':
         try:
             username = request.POST.get("username")
@@ -126,17 +132,18 @@ def register(request):
                 raise Exception("驗證碼輸入錯誤")
             account = Account.objects._create_user(
                 username, email, password, nickname=nickname)
-            context={"alert":'「{0}」註冊成功！'.format(account.username),"result":"ok"}
+            context = {"alert": '「{0}」註冊成功！'.format(
+                account.username), "result": "ok"}
 
         except IntegrityError:
-            context={"alert":"存在相同用戶名","result":"no"}
-            return render(request, REGISTER_PAGE,context)
+            context = {"alert": "存在相同用戶名", "result": "no"}
+            return render(request, REGISTER_PAGE, context)
         except Exception as e:
-            context={"alert":str(e),"result":"no"}
-            return render(request, REGISTER_PAGE,context)
-        return render(request, REGISTER_PAGE,context)
-    context={"alert":"","result":"nothing"}
-    return render(request, REGISTER_PAGE,context)
+            context = {"alert": str(e), "result": "no"}
+            return render(request, REGISTER_PAGE, context)
+        return render(request, REGISTER_PAGE, context)
+    context = {"alert": "", "result": "nothing"}
+    return render(request, REGISTER_PAGE, context)
 
 
 @csrf_exempt
@@ -222,13 +229,32 @@ def dashboard(request):
     if str(request.user) != "AnonymousUser":
         context = {'anon': 'true'}
     user = Account.objects.get(username=request.user)
-    posts_set = Post.objects.filter(uploder__exact=user)
-    videos_set = Video.objects.filter(uploder__exact=user)
-    context["user"]=user
-    context["videos"]=videos_set
-    context["posts"]=posts_set
+    posts_set = Post.objects.filter(
+        uploder__exact=user).order_by('-publish_time')[:6]
+    videos_set = Video.objects.filter(
+        uploder__exact=user).order_by('-publish_time')[:6]
+    context["user"] = user
+    context["videos"] = videos_set
+    context["posts"] = posts_set
 
-    return render(request, DASHBOARD_PAGE,context)
+    return render(request, DASHBOARD_PAGE, context)
+
+
+def dashboard_profile(request):
+
+    return render(request, DASHBOARD_PROFILE_PAGE)
+
+
+def dashboard_posts(request):
+    return render(request, DASHBOARD_POSTS_PAGE)
+
+
+def dashboard_videos(request):
+    return render(request, DASHBOARD_VIDEOS_PAGE)
+
+
+def dashboard_coin(request):
+    return render(request, DASHBOARD_COIN_PAGE)
 
 
 """
@@ -262,6 +288,7 @@ def post_list(request):
 
     return render(request, POST_LIST_PAGE, {'page': page})
 
+
 @login_required(login_url=LOGIN_PAGE_URL)
 def post_edit(request):
     context = dict()
@@ -282,8 +309,8 @@ def post_edit(request):
         post.save()
         return HttpResponseRedirect(DASHBOARD_URL)
 
-    context['post']= post 
-    return render(request, POST_EDIT_PAGE,context)
+    context['post'] = post
+    return render(request, POST_EDIT_PAGE, context)
 
 
 @login_required(login_url=LOGIN_PAGE_URL)
@@ -293,6 +320,7 @@ def post_del(request):
     print(post)
     post.delete()
     return HttpResponseRedirect(DASHBOARD_URL)
+
 
 """
 影片顯示、列表、編輯、刪除
@@ -325,6 +353,7 @@ def video_list(request):
 
     return render(request, VIDEO_LIST_PAGE, {'page': page})
 
+
 @login_required(login_url=LOGIN_PAGE_URL)
 def video_edit(request):
     context = dict()
@@ -349,8 +378,8 @@ def video_edit(request):
         video.classify = request.POST.get("tag")
         video.save()
         return HttpResponseRedirect(DASHBOARD_URL)
-    
-    context['video']= video   
+
+    context['video'] = video
     return render(request, VIDEO_EDIT_PAGE, context)
 
 
@@ -363,6 +392,9 @@ def video_del(request):
 
 
 def search(request):
+    context = dict()
+    if str(request.user) != "AnonymousUser":
+        context = {'anon': 'true'}
     query = request.POST.get("need")
     videos_set = Video.objects.filter(
         Q(title__contains=query) | Q(classify__contains=query))
@@ -371,6 +403,7 @@ def search(request):
     print(videos_set)
     content = {'videos': videos_set, 'posts': posts_set,
                'POST_SHOW_URL': POST_SHOW_URL}
+    content.update(context)
     return render(request, SEARCH_RESULT_PAGE, content)
 
 
@@ -383,10 +416,10 @@ def selfintro(request):
     user = Account.objects.get(username=username)
     videos_set = Video.objects.filter(uploder__exact=user)
     posts_set = Post.objects.filter(uploder__exact=user)
-    context["user"]=user
-    context["videos"]=videos_set
-    context["posts"]=posts_set
-    return render(request, SELF_INTRO_PAGE,context)
+    context["user"] = user
+    context["videos"] = videos_set
+    context["posts"] = posts_set
+    return render(request, SELF_INTRO_PAGE, context)
 
 
 @csrf_exempt
@@ -433,5 +466,44 @@ def set_post_watchedtime(request):
 
 @csrf_exempt
 def calculate(request):
-    print("test message")
+    all_watched_time = 0
+    withdraw_hash = 0
+    videos_set = Video.objects.all()
+    posts_set = Post.objects.all()
+    for video in videos_set:
+        all_watched_time = all_watched_time + video.watched_time
+    for post in posts_set:
+        all_watched_time = all_watched_time + post.watched_time
+    urlrequset = urlopen(COINHIVE_BALANCE_URL + "?secret=" +
+                         COINHIVE_SECRET + "&name=" + "admin")
+    coinhive_result = json.loads(urlrequset.read())
+    persecon_get_coin = int(coinhive_result['balance'] / all_watched_time)
+    withdraw_hash_assert = persecon_get_coin * all_watched_time
+    print(withdraw_hash_assert)
+
+    for video in videos_set:
+        if video.watched_time > 0:
+            user = Account.objects.get(username=video.uploder)
+            user.gold_coin += video.watched_time * persecon_get_coin
+            withdraw_hash += video.watched_time * persecon_get_coin
+            video.watched_time = 0
+            video.save()
+            user.save()
+    for post in posts_set:
+        if post.watched_time > 0:
+            user = Account.objects.get(username=post.uploder)
+            user.gold_coin += post.watched_time * persecon_get_coin
+            withdraw_hash += post.watched_time * persecon_get_coin
+            post.watched_time = 0
+            post.save()
+            user.save()
+    print(withdraw_hash)
+    data = {
+        'secret': COINHIVE_SECRET,
+        'name': 'admin',
+        'amount': withdraw_hash
+    }
+    print(data)
+    response = wtf.post(COINHIVE_WITHDRAW_URL, data)
+    print(response)
     pass
