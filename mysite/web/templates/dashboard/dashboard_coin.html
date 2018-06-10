@@ -127,35 +127,10 @@
       </div>
 
       <div class="col-9">
-        <h1>嘿 這是你的錢:{{user.gold_coin}} </h1>
-        <hr>
-        <h3>最近文章</h3>
-        {% for post in posts %}
-        <div class="d-flex">
-          <div class="p-2">標題：{{post.title}}</div>
-          <div class="ml-auto p-2">
-            <p>上傳日期：{{post.publish_time}}
-              <a href="{% url 'post_edit' %}?q={{post.upid}}">edit</a>
-              <a href="{% url 'post_del' %}?q={{post.upid}}">delete</a>
-            </p>
-          </div>
-        </div>
-        {% endfor %}
-        <hr>
-        <h3>最近影片</h3>
-        {% for video in videos %}
-        <div class="d-flex">
-          <div class="p-2">標題：{{video.title}}</div>
-          <div class="ml-auto p-2">
-            <p>上傳日期：{{video.publish_time}}
-              <a href="{% url 'video_edit' %}?q={{video.uvid}}">edit</a>
-              <a href="{% url 'video_del' %}?q={{video.uvid}}">delete</a>
-            </p>
-          </div>
-        </div>
-        {% endfor %}
+        <h5>目前累計:{{user.gold_coin}}</h5>
+        <br>
+        <h5>已經轉帳:0</h5>
       </div>
-    </div>
 
   </main>
 
