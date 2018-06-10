@@ -161,7 +161,7 @@ def upload_video(request):
         up_video.content = request.POST.get("description")
         up_video.classify = request.POST.get("tag")
         up_video.video_length = 0
-        new_post.uploder = user
+        up_video.uploder = user
         up_video.save()
 
     return render(request, UPLOAD_PAGE)
