@@ -21,6 +21,9 @@ LOGIN_PAGE_URL = "/web/login/"
 REGISTER_PAGE = 'register/register.html'
 LOGIN_REQUIRED_PAGE = 'logrequirePage.html'
 VIDEO_NEW_PAGE = 'video/video_new.html'
+VIDEO_SHOW_PAGE = 'video/video_show.html'
+VIDEO_LIST_PAGE = 'video/video_list.html'
+VIDEO_EDIT_PAGE = 'video/video_edit.html'
 POST_SHOW_PAGE = 'post/post_show.html'
 POST_SHOW_URL = '/postShow/?'
 POST_EDIT_URL = '/postedit/?'
@@ -28,8 +31,6 @@ POST_DEL_URL = '/postdel/?'
 POST_EDIT_PAGE = 'post/post_edit.html'
 POST_LIST_PAGE = 'post/post_list.html'
 POST_NEW_PAGE = 'post/post_new.html'
-VIDEO_SHOW_PAGE = 'video/video_show.html'
-VIDEO_LIST_PAGE = 'video/video_list.html'
 DASHBOARD_PAGE = 'dashboard/dashboard.html'
 DASHBOARD_URL = '/dashboard'
 DASHBOARD_POSTSMANAGE_PAGE = 'dashboard/manage.html'
@@ -310,11 +311,35 @@ def video_list(request):
 
 
 def video_edit(request):
-    pass
+    uvid = request.GET.get("q")
+    video = Video.objects.get(uvid__exact=uvid)
+    if video.uploder != request.user:
+        return render(request, HOME_PAGE)
+    if request.method == 'POST':
+        video.title = request.POST.get("title")
+        try:
+            video.photo = request.FILES["image"]
+        except Exception:
+            pass
+        try:
+            video_path = request.FILES["videofile"]
+        except Exception:
+            pass
+
+        video.content = request.POST.get("description")
+        video.classify = request.POST.get("tag")
+        video.save()
+        return HttpResponseRedirect(DASHBOARD_URL)
+
+    return render(request, VIDEO_EDIT_PAGE, {'video': video})
 
 
+@login_required(login_url=LOGIN_PAGE_URL)
 def video_del(request):
-    pass
+    vid = request.GET.get("q")
+    video = Video.objects.get(uvid__exact=vid)
+    print(video)
+    return HttpResponseRedirect(DASHBOARD_URL)
 
 
 def search(request):

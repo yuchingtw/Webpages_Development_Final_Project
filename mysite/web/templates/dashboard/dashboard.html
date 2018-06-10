@@ -103,8 +103,8 @@
     <h3>影片</h3>
     {% for video in videos %}
     <p>上傳日期：{{video.publish_time}}標題：{{video.title}}
-      <a href="{{POST_EDIT_URL}}q={{video.uvid}}">edit</a>
-      <a href="{{POST_DEL_URL}}q={{video.uvid}}">delete</a>
+      <a href="{% url 'video_edit' %}?q={{video.uvid}}">edit</a>
+      <a href="{% url 'video_del' %}?q={{video.uvid}}">delete</a>
     </p>
     {% endfor %}
   </main>
