@@ -303,7 +303,8 @@ def selfintro(request):
 
 @csrf_exempt
 def get_videos_set(request):
-    username = request.POST.get('username')
+    data = json.loads(request.body.decode('utf-8'))
+    username = data.get("username")
     user = Account.objects.get(username=username)
     videos_set = Video.objects.filter(uploder__exact=user)
     report = serialize('json', videos_set)
@@ -312,7 +313,8 @@ def get_videos_set(request):
 
 @csrf_exempt
 def get_posts_set(request):
-    username = request.POST.get('username')
+    data = json.loads(request.body.decode('utf-8'))
+    username = data.get("username")
     user = Account.objects.get(username=username)
     posts_set = Post.objects.filter(uploder__exact=user)
     report = serialize('json', posts_set)
