@@ -114,7 +114,7 @@
   </nav>
 
   <main id="app" role="main" class="container mt-3">
-    <h2>{{post.title}}</h2>
+    <h1>{{post.title}}</h1>
     <textarea id="content">{{post.content}}</textarea>
     <div class="row">
       <div class="col-3">
@@ -126,6 +126,9 @@
         <h6>喜歡人數：{{post.like}}人 不喜歡人數：{{post.dislike}}人</h6>
       </div>
     </div>
+    <hr>
+    <a class="h5 text-primary" href="/selfintro/?q={{uploder.username}}">{{uploder.nickname}}</a>
+    <p class="text-secondary ">　{{uploder.intro}}</p>
   </main>
 
   <!-- Optional JavaScript -->

@@ -214,7 +214,9 @@ def dashboard(request):
 def post_show(request):
     upid = request.GET.get('q')
     post = Post.objects.get(upid=upid)
-    return render(request, POST_SHOW_PAGE, {'post': post})
+    uploder = Account.objects.get(username=post.uploder)
+    print(uploder)
+    return render(request, POST_SHOW_PAGE, {'post': post, 'uploder': uploder})
 
 
 def post_list(request):
@@ -240,6 +242,7 @@ def video_show(request):
     uvid = request.GET.get('q')
     video = Video.objects.get(uvid=uvid)
     uploder = Account.objects.get(username=video.uploder)
+    print(uploder)
     return render(request, VIDEO_SHOW_PAGE, {'video': video, 'uploder': uploder})
 
 
