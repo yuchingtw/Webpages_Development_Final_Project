@@ -88,20 +88,45 @@
       </div>
     </div>
   </nav>
-  nickname: {{user.nickname}}
-  <br> username: {{user.username}}
-  <br> {% for p in posts %}
-  <div class="card mx-2">
-    <a href="/web/postShow?q={{p.upid}}">
-      <img class="card-img-top" src="{{ p.photo.url }}" alt="Card image cap">
-    </a>
-    <div class="card-body">
-      <a href="/web/postShow?q={{p.upid}}">
-        <h5 class="card-title">{{ p.title }}</h5>
-      </a>
+
+  <main role="main" class="container mt-3">
+    <div class="card w-100">
+      <div class="card-body">
+        <h5 class="card-title">{{ user.nickname }}</h5>
+        <p class="card-text">帳號：{{ user.username }}</p>
+        <p class="card-text">他的簡介：{{ user.intro }}</p>
+      </div>
     </div>
-  </div>
-  {% endfor %}
+
+    <br>
+
+    <div id="app" class="card text-center">
+      <div class="card-header">
+        <ul class="nav nav-pills card-header-pills">
+          <li class="nav-item">
+            <a :class="'nav-link ' + post_active" href="#" @click="get_posts_set()">他的文章</a>
+          </li>
+          <li class="nav-item">
+            <a :class="'nav-link ' + video_active" href="#" @click="get_videos_set()">他的影片</a>
+          </li>
+        </ul>
+      </div>
+      <div class="card-group mt-3">
+        <div class="card mx-2" v-for="d in datas">
+          <a :href="'/web/postShow?q=' + d.pk">
+            <img class="card-img-top" :src="'/res/' + d.fields.photo" alt="Card image cap">
+          </a>
+          <div class="card-body">
+            <a :href="'/web/postShow?q=' + d.pk">
+              <h5 class="card-title">[% d.fields.title %]</h5>
+            </a>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+  </main>
   <footer class="footer">
     <p>copyright@或是甚麼的</p>
     <p>
@@ -117,6 +142,59 @@
     crossorigin="anonymous"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
     crossorigin="anonymous"></script>
+
+  <!-- Axios -->
+  <script src="{% static 'js/axios.min.js' %}"></script>
+
+  <!-- Vue.js -->
+  <script src="{% static 'js/vue.min.js' %} "></script>
+
+  <script>
+    var app = new Vue({
+      el: '#app',
+      data: {
+        datas: null,
+        post_active: "active",
+        video_active: "deactive",
+      },
+      methods: {
+        get_videos_set: function () {
+          axios
+            .post("{% url 'get_videos_set' %}", { username: "{{ user.username }}" })
+            .then(function (response) {
+              app.datas = response.data;
+              app.post_active = "deactive";
+              app.video_active = "active";
+            })
+            .catch(function (error) {
+            })
+        },
+        get_posts_set: function () {
+          axios
+            .post("{% url 'get_posts_set' %}", { username: "{{ user.username }}" })
+            .then(function (response) {
+              app.datas = response.data;
+              app.post_active = "active";
+              app.video_active = "deactive";
+            })
+            .catch(function (error) {
+            })
+        },
+      },
+      mounted() {
+        axios
+          .post("{% url 'get_posts_set' %}", {
+            username: "{{ user.username }}"
+          })
+          .then(function (response) {
+            app.datas = response.data;
+          })
+          .catch(function (error) {
+          })
+      },
+      delimiters: ["[% ", "%]"]
+    })
+  </script>
 
   <script>
     $(function () {
