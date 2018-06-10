@@ -236,6 +236,22 @@ def dashboard(request):
     return render(request, DASHBOARD_PAGE, context)
 
 
+def dashboard_profile(request):
+    pass
+
+
+def dashboard_posts(request):
+    pass
+
+
+def dashboard_videos(request):
+    pass
+
+
+def dashboard_coin(request):
+    pass
+
+
 """
 文章顯示、列表、編輯、刪除
 """

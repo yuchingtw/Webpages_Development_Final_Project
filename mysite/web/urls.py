@@ -10,6 +10,10 @@ urlpatterns = [
     url(r'search_result/', views.search, name="search"),
     url(r'selfintro/', views.selfintro, name="selfintro"),
 
+    url(r'dashboard/profile', views.dashboard_profile, name="dashboard_profile"),
+    url(r'dashboard/posts', views.dashboard_posts, name="dashboard_posts"),
+    url(r'dashboard/videos', views.dashboard_videos, name="dashboard_videos"),
+    url(r'dashboard/coin', views.dashboard_coin, name="dashboard_coin"),
     url(r'dashboard/', views.dashboard, name="dashboard"),
 
     url(r'postShow/', views.post_show, name="post_show"),
