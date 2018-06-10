@@ -121,35 +121,22 @@
           </a>
           <a href="{% url 'dashboard_profile' %}" class="list-group-item list-group-item-action">Profile</a>
           <a href="{% url 'dashboard_coin' %}" class="list-group-item list-group-item-action">Coin</a>
-          <a href="{% url 'dashboard_posts' %}" class="list-group-item list-group-item-action  active">Posts</a>
-          <a href="{% url 'dashboard_videos' %}" class="list-group-item list-group-item-action">Videos</a>
+          <a href="{% url 'dashboard_posts' %}" class="list-group-item list-group-item-action">Posts</a>
+          <a href="{% url 'dashboard_videos' %}" class="list-group-item list-group-item-action active">Videos</a>
         </div>
       </div>
 
       <div class="col-9">
-        <h1>嘿 這是你的錢:{{user.gold_coin}} </h1>
-        <hr>
-        <h3>最近文章</h3>
-        {% for post in posts %}
+        <h2>所有影片</h2>
+        <hr> {% for video in videos %}
         <div class="d-flex">
-          <div class="p-2">標題：{{post.title}}</div>
-          <div class="ml-auto p-2">
-            <p>上傳日期：{{post.publish_time}}
-              <a href="{% url 'post_edit' %}?q={{post.upid}}">edit</a>
-              <a href="{% url 'post_del' %}?q={{post.upid}}">delete</a>
-            </p>
+          <div class="p-2">
+            <a href="{% url 'video_show' %}?q={{ video.uvid }}">{{video.title}}</a>
           </div>
-        </div>
-        {% endfor %}
-        <hr>
-        <h3>最近影片</h3>
-        {% for video in videos %}
-        <div class="d-flex">
-          <div class="p-2">標題：{{video.title}}</div>
           <div class="ml-auto p-2">
             <p>上傳日期：{{video.publish_time}}
-              <a href="{% url 'video_edit' %}?q={{video.uvid}}">edit</a>
-              <a href="{% url 'video_del' %}?q={{video.uvid}}">delete</a>
+              <a href="{% url 'video_edit' %}?q={{ video.uvid }}">edit</a>
+              <a href="{% url 'video_del' %}?q={{ video.uvid }}">delete</a>
             </p>
           </div>
         </div>

@@ -132,11 +132,13 @@
         <h3>最近文章</h3>
         {% for post in posts %}
         <div class="d-flex">
-          <div class="p-2">標題：{{post.title}}</div>
+          <div class="p-2">
+            <a href="{% url 'post_show' %}?q={{ post.upid }}">{{ post.title }}</a>
+          </div>
           <div class="ml-auto p-2">
             <p>上傳日期：{{post.publish_time}}
-              <a href="{% url 'post_edit' %}?q={{post.upid}}">edit</a>
-              <a href="{% url 'post_del' %}?q={{post.upid}}">delete</a>
+              <a href="{% url 'post_edit' %}?q={{ post.upid }}">edit</a>
+              <a href="{% url 'post_del' %}?q={{ post.upid }}">delete</a>
             </p>
           </div>
         </div>
@@ -145,11 +147,13 @@
         <h3>最近影片</h3>
         {% for video in videos %}
         <div class="d-flex">
-          <div class="p-2">標題：{{video.title}}</div>
+          <div class="p-2">
+            <a href="{% url 'video_show' %}?q={{ video.uvid }}">{{video.title}}</a>
+          </div>
           <div class="ml-auto p-2">
             <p>上傳日期：{{video.publish_time}}
-              <a href="{% url 'video_edit' %}?q={{video.uvid}}">edit</a>
-              <a href="{% url 'video_del' %}?q={{video.uvid}}">delete</a>
+              <a href="{% url 'video_edit' %}?q={{ video.uvid }}">edit</a>
+              <a href="{% url 'video_del' %}?q={{ video.uvid }}">delete</a>
             </p>
           </div>
         </div>
