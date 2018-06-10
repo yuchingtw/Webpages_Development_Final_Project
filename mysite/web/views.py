@@ -225,13 +225,15 @@ def dashboard(request):
     if str(request.user) != "AnonymousUser":
         context = {'anon': 'true'}
     user = Account.objects.get(username=request.user)
-    posts_set = Post.objects.filter(uploder__exact=user)
-    videos_set = Video.objects.filter(uploder__exact=user)
-    context["user"]=user
-    context["videos"]=videos_set
-    context["posts"]=posts_set
+    posts_set = Post.objects.filter(
+        uploder__exact=user).order_by('-publish_time')[:6]
+    videos_set = Video.objects.filter(
+        uploder__exact=user).order_by('-publish_time')[:6]
+    context["user"] = user
+    context["videos"] = videos_set
+    context["posts"] = posts_set
 
-    return render(request, DASHBOARD_PAGE,context)
+    return render(request, DASHBOARD_PAGE, context)
 
 
 """
@@ -265,6 +267,7 @@ def post_list(request):
 
     return render(request, POST_LIST_PAGE, {'page': page})
 
+
 @login_required(login_url=LOGIN_PAGE_URL)
 def post_edit(request):
     context = dict()
@@ -285,8 +288,8 @@ def post_edit(request):
         post.save()
         return HttpResponseRedirect(DASHBOARD_URL)
 
-    context['post']= post 
-    return render(request, POST_EDIT_PAGE,context)
+    context['post'] = post
+    return render(request, POST_EDIT_PAGE, context)
 
 
 @login_required(login_url=LOGIN_PAGE_URL)
@@ -296,6 +299,7 @@ def post_del(request):
     print(post)
     post.delete()
     return HttpResponseRedirect(DASHBOARD_URL)
+
 
 """
 影片顯示、列表、編輯、刪除
@@ -328,6 +332,7 @@ def video_list(request):
 
     return render(request, VIDEO_LIST_PAGE, {'page': page})
 
+
 @login_required(login_url=LOGIN_PAGE_URL)
 def video_edit(request):
     context = dict()
@@ -352,8 +357,8 @@ def video_edit(request):
         video.classify = request.POST.get("tag")
         video.save()
         return HttpResponseRedirect(DASHBOARD_URL)
-    
-    context['video']= video   
+
+    context['video'] = video
     return render(request, VIDEO_EDIT_PAGE, context)
 
 
@@ -386,10 +391,10 @@ def selfintro(request):
     user = Account.objects.get(username=username)
     videos_set = Video.objects.filter(uploder__exact=user)
     posts_set = Post.objects.filter(uploder__exact=user)
-    context["user"]=user
-    context["videos"]=videos_set
-    context["posts"]=posts_set
-    return render(request, SELF_INTRO_PAGE,context)
+    context["user"] = user
+    context["videos"] = videos_set
+    context["posts"] = posts_set
+    return render(request, SELF_INTRO_PAGE, context)
 
 
 @csrf_exempt
