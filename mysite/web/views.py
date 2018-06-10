@@ -27,8 +27,10 @@ POST_NEW_PAGE = 'post/post_new.html'
 VIDEO_SHOW_PAGE = 'video/video_show.html'
 VIDEO_LIST_PAGE = 'video/video_list.html'
 DASHBOARD_PAGE = 'dashboard/dashboard.html'
+DASHBOARD_POSTSMANAGE_PAGE = 'dashboard/postsmanage.html'
 SEARCH_RESULT_PAGE = 'searchresult.html'
 SELF_INTRO_PAGE = 'self_intro.html'
+
 
 # CoinHive
 COINHIVE_ENABLE = '0'
@@ -220,8 +222,8 @@ def post_show(request):
     post = Post.objects.get(upid=upid)
     uploder = Account.objects.get(username=post.uploder)
     print(uploder)
-    context['post']=post
-    context['uploder']=uploder
+    context['post'] = post
+    context['uploder'] = uploder
     return render(request, POST_SHOW_PAGE, context)
 
 
@@ -252,9 +254,9 @@ def video_show(request):
     video = Video.objects.get(uvid=uvid)
     uploder = Account.objects.get(username=video.uploder)
     print(uploder)
-    context['video']=video
-    context['uploder']=uploder
-    return render(request, VIDEO_SHOW_PAGE,context)
+    context['video'] = video
+    context['uploder'] = uploder
+    return render(request, VIDEO_SHOW_PAGE, context)
 
 
 def video_list(request):
@@ -294,3 +296,28 @@ def selfintro(request):
     posts_set = Post.objects.filter(uploder__exact=user)
 
     return render(request, SELF_INTRO_PAGE, {"user": user, "videos": videos_set, "posts": posts_set})
+
+
+@csrf_exempt
+def get_videos_set(request):
+    username = request.POST.get('username')
+    user = Account.objects.get(username=username)
+    videos_set = Video.objects.filter(uploder__exact=user)
+    report = serialize('json', videos_set)
+    return HttpResponse(report, content_type="application/json")
+
+
+@csrf_exempt
+def get_posts_set(request):
+    username = request.POST.get('username')
+    user = Account.objects.get(username=username)
+    posts_set = Post.objects.filter(uploder__exact=user)
+    report = serialize('json', posts_set)
+    return HttpResponse(report, content_type="application/json")
+
+
+def manager(request):
+    user = Account.objects.get(username=request.username)
+    posts_set = Post.objects.filter(uploder__exact=user)
+    videos_set = Video.objects.filter(uploder__exact=user)
+    return render(request, DASHBOARD_POSTSMANAGE_PAGE, {'posts': posts_set, "videos": videos_set})
