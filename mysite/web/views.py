@@ -270,6 +270,13 @@ def search(request):
 
 
 def selfintro(request):
+    context = dict()
+    if str(request.user) != "AnonymousUser":
+        context = {'anon': 'true'}
+
     username = request.GET.get('q')
     user = Account.objects.get(username=username)
-    return render(request, SELF_INTRO_PAGE, {"user": user})
+    videos_set = Video.objects.filter(uploder__exact=user)
+    posts_set = Post.objects.filter(uploder__exact=user)
+
+    return render(request, SELF_INTRO_PAGE, {"user": user, "videos": videos_set, "posts": posts_set})
