@@ -15,13 +15,6 @@
 
   <!-- Custom styles for this template -->
   <link href="{% static 'css/offcanvas.css' %}" rel="stylesheet">
-  <link href="{% static 'css/post_editer.css' %}" rel="stylesheet">
-
-  <!-- SimpleMDE -->
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/simplemde/latest/simplemde.min.css">
-
-  <!-- Custom styles for this template -->
-
 
   <!-- CoinHive api -->
   {% if COINHIVE_ENABLE == '1' %} {% if anon %}
@@ -93,26 +86,56 @@
     </div>
   </nav>
 
+  <br>
+
   <main role="main" class="container">
 
-    <h1>嘿 這是你的錢:{{user.gold_coin}}
-    </h1>
-    <h3>文章</h3>
-    {% for post in posts %}
-    <p>上傳日期：{{post.publish_time}}標題：{{post.title}}
-      <a href="{% url 'post_edit' %}?q={{post.upid}}">edit</a>
-      <a href="{% url 'post_del' %}?q={{post.upid}}">delete</a>
-    </p>
-    {% endfor %}
-    <h3>影片</h3>
-    {% for video in videos %}
-    <p>上傳日期：{{video.publish_time}}標題：{{video.title}}
-      <a href="{% url 'video_edit' %}?q={{video.uvid}}">edit</a>
-      <a href="{% url 'video_del' %}?q={{video.uvid}}">delete</a>
-    </p>
-    {% endfor %}
-  </main>
+    <div class="row">
+      <div class="col-3">
+        <div class="list-group">
+          <li class="list-group-item bg-light text-muted">DashBoard</li>
+          <a href="#" class="list-group-item list-group-item-action active">
+            OverView
+          </a>
+          <a href="#" class="list-group-item list-group-item-action">Profile</a>
+          <a href="#" class="list-group-item list-group-item-action">Coin</a>
+          <a href="#" class="list-group-item list-group-item-action">Posts</a>
+          <a href="#" class="list-group-item list-group-item-action">Videos</a>
+        </div>
+      </div>
 
+      <div class="col-9">
+        <h1>嘿 這是你的錢:{{user.gold_coin}} </h1>
+        <hr>
+        <h3>最近文章</h3>
+        {% for post in posts %}
+        <div class="d-flex">
+          <div class="p-2">標題：{{post.title}}</div>
+          <div class="ml-auto p-2">
+            <p>上傳日期：{{post.publish_time}}
+              <a href="{% url 'post_edit' %}?q={{post.upid}}">edit</a>
+              <a href="{% url 'post_del' %}?q={{post.upid}}">delete</a>
+            </p>
+          </div>
+        </div>
+        {% endfor %}
+        <hr>
+        <h3>最近影片</h3>
+        {% for video in videos %}
+        <div class="d-flex">
+          <div class="p-2">標題：{{video.title}}</div>
+          <div class="ml-auto p-2">
+            <p>上傳日期：{{video.publish_time}}
+              <a href="{% url 'video_edit' %}?q={{video.uvid}}">edit</a>
+              <a href="{% url 'video_del' %}?q={{video.uvid}}">delete</a>
+            </p>
+          </div>
+        </div>
+        {% endfor %}
+      </div>
+    </div>
+
+  </main>
 
   <!-- Optional JavaScript -->
   <!-- jQuery first, then Popper.js, then Bootstrap JS -->
@@ -123,27 +146,11 @@
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
     crossorigin="anonymous"></script>
 
-  <!-- SimpleMDE -->
-  <script src="https://cdn.jsdelivr.net/simplemde/latest/simplemde.min.js"></script>
-
   <!-- Axios -->
   <script src="{% static 'js/axios.min.js' %}"></script>
 
   <!-- Vue.js -->
   <script src="{% static 'js/vue.min.js' %} "></script>
-
-  <script>
-    var app = new Vue({
-      el: '#app',
-      data: {
-        simplemde: null,
-      },
-      mounted() {
-        app.simplemde = new SimpleMDE({ element: document.getElementById("content") });
-      },
-      delimiters: ["[% ", "%]"]
-    })
-  </script>
 
   <script>
     $(function () {
