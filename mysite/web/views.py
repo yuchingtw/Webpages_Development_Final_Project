@@ -18,7 +18,7 @@ LOGIN_PAGE = 'login/login.html'
 LOGIN_PAGE_URL = "/web/login/"
 REGISTER_PAGE = 'register/register.html'
 LOGIN_REQUIRED_PAGE = 'logrequirePage.html'
-UPLOAD_PAGE = 'videoupload.html'
+VIDEO_NEW_PAGE = 'video/video_new.html'
 POST_SHOW_PAGE = 'post/post_show.html'
 POST_LIST_PAGE = 'post/post_list.html'
 POST_NEW_PAGE = 'post/post_new.html'
@@ -151,7 +151,12 @@ def create_code_img(request):
 
 
 @login_required(login_url=LOGIN_PAGE_URL)
-def upload_video(request):
+def video_new(request):
+
+    context = dict()
+    if str(request.user) != "AnonymousUser":
+        context = {'anon': 'true'}
+
     if request.method == 'POST':
         user = get_object_or_404(Account, username=request.user)
         up_video = Video()
@@ -164,7 +169,7 @@ def upload_video(request):
         up_video.uploder = user
         up_video.save()
 
-    return render(request, UPLOAD_PAGE)
+    return render(request, VIDEO_NEW_PAGE, context)
 
 
 @login_required(login_url=LOGIN_PAGE_URL)
