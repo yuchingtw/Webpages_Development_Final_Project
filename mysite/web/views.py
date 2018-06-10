@@ -53,7 +53,6 @@ def index(request):
     video = Video.objects.order_by('-publish_time')[:6]
     post_pop = Post.objects.order_by('-like')[:6]
     video_pop = Video.objects.order_by('-like')[:6]
-    print(post)
     context.update({'post': post, 'video': video,
                     'post_pop': post_pop, 'video_pop': video_pop})
 
@@ -61,6 +60,9 @@ def index(request):
                          COINHIVE_SECRET + "&name=" + str(request.user))
     context.update(json.loads(urlrequset.read()))
     context['COINHIVE_ENABLE'] = COINHIVE_ENABLE
+
+    if str(request.user) == 'admin':
+        context.update({'admin': True})
 
     return render(request, HOME_PAGE, context)
 
@@ -407,3 +409,7 @@ def set_post_watchedtime(request):
     post.watched_time = post.watched_time + time
     post.save()
     return HttpResponse("", content_type="application/json")
+
+
+def calculate(request):
+    pass

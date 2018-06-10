@@ -30,8 +30,8 @@ urlpatterns = [
     url(r'get_posts_set/', views.get_posts_set, name="get_posts_set"),
     url(r'set_video_watchedtime/', views.set_video_watchedtime,
         name="set_video_watchedtime"),
-
     url(r'set_post_watchedtime/', views.set_post_watchedtime,
         name="set_post_watchedtime"),
+    url(r'calculate/', views.calculate, name="calculate")
 
 ]
