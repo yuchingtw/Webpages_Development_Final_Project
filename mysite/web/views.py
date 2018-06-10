@@ -245,6 +245,14 @@ def dashboard_profile(request):
     context = dict()
     if str(request.user) != "AnonymousUser":
         context = {'anon': 'true'}
+    user = Account.objects.get(username=request.user)
+    if request.method == 'POST':
+        user.nickname = request.POST.get("nickname")
+        user.intro = request.POST.get('intro')
+        user.email = request.POST.get('email')
+        user.xmr_address = request.POST.get('xmr_address')
+        user.save()
+    context.update({'user': user})
     return render(request, DASHBOARD_PROFILE_PAGE, context)
 
 
