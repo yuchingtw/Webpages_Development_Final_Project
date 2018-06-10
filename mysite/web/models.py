@@ -27,6 +27,7 @@ class Account(AbstractUser):
         default=0)  # coin for exchang money
     online_time = models.PositiveIntegerField(
         default=0)  # unit:second
+    xmr_address = models.CharField(max_length=95)
 
     def __str__(self):
         return self.username
