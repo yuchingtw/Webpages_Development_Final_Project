@@ -411,5 +411,7 @@ def set_post_watchedtime(request):
     return HttpResponse("", content_type="application/json")
 
 
+@csrf_exempt
 def calculate(request):
+    print("test message")
     pass

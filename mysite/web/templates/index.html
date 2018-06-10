@@ -35,7 +35,7 @@
       <div class="navbar-collapse offcanvas-collapse" id="navbarsDefault">
         <ul class="navbar-nav mr-auto">
           <li class="nav-item active">
-            <a class="nav-link" href="/index">首頁
+            <a class="nav-link" href="{% url 'index' %}">首頁
               <span class="sr-only">(current)</span>
             </a>
           </li>
@@ -63,13 +63,9 @@
           </li>
           {% if admin %}
           <li class="nav-itme">
-            <form action="{% url 'calculate' %}" method="post">
-              {% csrf_token %}
-              <input class="btn btn-dark" type="submit" value="計算">
-            </form>
+            <a onclick="calculatorMoney()" class="btn btn-dark">計算</a>
           </li>
           {% endif %}
-
           <li class="nav-item active">
             <a class="nav-link" href="/dashboard">{{ request.user }}
               <span class="sr-only">(current)</span>
@@ -82,15 +78,15 @@
               <a class="dropdown-item" href="/video_new/">影片</a>
             </div>
           </li>
-          <form action="/web/logout" method="get">
+          <form action="{% url 'logout' %}" method="get">
             <input class="btn btn-dark" type="submit" value="logout">
           </form>
         </ul>
         {% else %}
-        <form action="/web/login" method="get">
+        <form action="{% url 'login_page' %}" method="get">
           <input class="btn btn-dark" type="submit" value="login">
         </form>
-        <form action="/web/register" method="get">
+        <form action="{% url 'register_page' %}" method="get">
           <input class="btn btn-dark" type="submit" value="register">
         </form>
         {% endif %}
@@ -232,6 +228,23 @@
     crossorigin="anonymous"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
     crossorigin="anonymous"></script>
+
+  <!-- Axios -->
+  <script src="{% static 'js/axios.min.js' %}"></script>
+
+  <!-- Vue.js -->
+  <script src="{% static 'js/vue.min.js' %} "></script>
+
+  <script>
+    var calculatorMoney = function () {
+      axios
+        .post("{% url 'calculate' %}")
+        .then(function (response) {
+        })
+        .catch(function (error) {
+        })
+    }
+  </script>
 
   <script>
     $(function () {
