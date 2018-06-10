@@ -242,7 +242,7 @@ def dashboard(request):
     user = Account.objects.get(username=request.user)
     posts_set = Post.objects.filter(uploder__exact=user)
     videos_set = Video.objects.filter(uploder__exact=user)
-    return render(request, DASHBOARD_PAGE, {'user': user, 'posts': posts_set, "videos": videos_set, "POST_EDIT_URL": POST_EDIT_URL, "POST_DEL_URL": POST_DEL_URL})
+    return render(request, DASHBOARD_PAGE, {'user': user, 'posts': posts_set, "videos": videos_set})
 
 
 """
@@ -351,4 +351,17 @@ def get_posts_set(request):
     user = Account.objects.get(username=username)
     posts_set = Post.objects.filter(uploder__exact=user)
     report = serialize('json', posts_set)
+    return HttpResponse(report, content_type="application/json")
+
+
+@csrf_exempt
+def set_video_watchedtime(request):
+    data = json.loads(request.body.decode('utf-8'))
+    time = data.get("time")
+    uvid = data.get("uvid")
+
+    video = Video.objects.get(uvid=uvid)
+    video.watched_time = video.watched_time + time
+    video.save()
+    report = ""
     return HttpResponse(report, content_type="application/json")
