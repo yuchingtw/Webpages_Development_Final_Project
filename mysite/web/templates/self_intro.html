@@ -113,14 +113,29 @@
       </div>
       <div class="card-group mt-3">
         <div class="card mx-2" v-for="d in datas">
-          <a :href="'/web/postShow?q=' + d.pk">
-            <img class="card-img-top" :src="'/res/' + d.fields.photo" alt="Card image cap">
-          </a>
-          <div class="card-body">
+
+          <div v-if="post_active == 'active'">
             <a :href="'/web/postShow?q=' + d.pk">
-              <h5 class="card-title">[% d.fields.title %]</h5>
+              <img class="card-img-top" :src="'/res/' + d.fields.photo" alt="Card image cap">
             </a>
+            <div class="card-body">
+              <a :href="'/web/postShow?q=' + d.pk">
+                <h5 class="card-title">[% d.fields.title %]</h5>
+              </a>
+            </div>
           </div>
+
+          <div v-if="video_active == 'active'">
+            <a :href="'/web/videoShow?q=' + d.pk">
+              <img class="card-img-top" :src="'/res/' + d.fields.photo" alt="Card image cap">
+            </a>
+            <div class="card-body">
+              <a :href="'/web/videoShow?q=' + d.pk">
+                <h5 class="card-title">[% d.fields.title %]</h5>
+              </a>
+            </div>
+          </div>
+
         </div>
       </div>
 

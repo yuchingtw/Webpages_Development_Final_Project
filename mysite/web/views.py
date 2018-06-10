@@ -21,6 +21,9 @@ LOGIN_PAGE_URL = "/web/login/"
 REGISTER_PAGE = 'register/register.html'
 LOGIN_REQUIRED_PAGE = 'logrequirePage.html'
 VIDEO_NEW_PAGE = 'video/video_new.html'
+VIDEO_SHOW_PAGE = 'video/video_show.html'
+VIDEO_LIST_PAGE = 'video/video_list.html'
+VIDEO_EDIT_PAGE = 'video/video_edit.html'
 POST_SHOW_PAGE = 'post/post_show.html'
 POST_SHOW_URL = '/postShow/?'
 POST_EDIT_URL = '/postedit/?'
@@ -28,8 +31,6 @@ POST_DEL_URL = '/postdel/?'
 POST_EDIT_PAGE = 'post/post_edit.html'
 POST_LIST_PAGE = 'post/post_list.html'
 POST_NEW_PAGE = 'post/post_new.html'
-VIDEO_SHOW_PAGE = 'video/video_show.html'
-VIDEO_LIST_PAGE = 'video/video_list.html'
 DASHBOARD_PAGE = 'dashboard/dashboard.html'
 DASHBOARD_URL = '/dashboard'
 DASHBOARD_POSTSMANAGE_PAGE = 'dashboard/manage.html'
@@ -52,7 +53,6 @@ def index(request):
     video = Video.objects.order_by('-publish_time')[:6]
     post_pop = Post.objects.order_by('-like')[:6]
     video_pop = Video.objects.order_by('-like')[:6]
-    print(post)
     context.update({'post': post, 'video': video,
                     'post_pop': post_pop, 'video_pop': video_pop})
 
@@ -60,6 +60,9 @@ def index(request):
                          COINHIVE_SECRET + "&name=" + str(request.user))
     context.update(json.loads(urlrequset.read()))
     context['COINHIVE_ENABLE'] = COINHIVE_ENABLE
+
+    if str(request.user) == 'admin':
+        context.update({'admin': True})
 
     return render(request, HOME_PAGE, context)
 
@@ -314,11 +317,35 @@ def video_list(request):
 
 
 def video_edit(request):
-    pass
+    uvid = request.GET.get("q")
+    video = Video.objects.get(uvid__exact=uvid)
+    if video.uploder != request.user:
+        return render(request, HOME_PAGE)
+    if request.method == 'POST':
+        video.title = request.POST.get("title")
+        try:
+            video.photo = request.FILES["image"]
+        except Exception:
+            pass
+        try:
+            video_path = request.FILES["videofile"]
+        except Exception:
+            pass
+
+        video.content = request.POST.get("description")
+        video.classify = request.POST.get("tag")
+        video.save()
+        return HttpResponseRedirect(DASHBOARD_URL)
+
+    return render(request, VIDEO_EDIT_PAGE, {'video': video})
 
 
+@login_required(login_url=LOGIN_PAGE_URL)
 def video_del(request):
-    pass
+    vid = request.GET.get("q")
+    video = Video.objects.get(uvid__exact=vid)
+    print(video)
+    return HttpResponseRedirect(DASHBOARD_URL)
 
 
 def search(request):
@@ -371,9 +398,24 @@ def set_video_watchedtime(request):
     data = json.loads(request.body.decode('utf-8'))
     time = data.get("time")
     uvid = data.get("uvid")
-
     video = Video.objects.get(uvid=uvid)
     video.watched_time = video.watched_time + time
     video.save()
-    report = ""
-    return HttpResponse(report, content_type="application/json")
+    return HttpResponse("", content_type="application/json")
+
+
+@csrf_exempt
+def set_post_watchedtime(request):
+    data = json.loads(request.body.decode('utf-8'))
+    time = data.get("time")
+    upid = data.get("upid")
+    post = Post.objects.get(upid=upid)
+    post.watched_time = post.watched_time + time
+    post.save()
+    return HttpResponse("", content_type="application/json")
+
+
+@csrf_exempt
+def calculate(request):
+    print("test message")
+    pass

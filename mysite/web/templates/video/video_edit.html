@@ -108,18 +108,18 @@
   </nav>
 
   <main role="main" class="container mt-3">
-    <form enctype="multipart/form-data" action="/video_new/" method="post">
+    <form enctype="multipart/form-data" action="#" method="post">
       {% csrf_token %}
       <h6>標題</h6>
-      <input type="text" name="title" id="title" class="form-control " placeholder="Title" required autofocus>
+      <input type="text" name="title" id="title" value="{{video.title}}" class="form-control " placeholder="Title" required autofocus>
       <h6>圖片</h6>
-      <input type="file" name="image" id="image" class="form-control " placeholder="Image" required>
+      <input type="file" name="image" id="image" class="form-control " placeholder="Image">
       <h6>檔案</h6>
-      <input type="file" name="videofile" id="videofile" class="form-control " placeholder="Video" required>
+      <input type="file" name="videofile" id="videofile" class="form-control " placeholder="Video">
       <h6>簡述</h6>
-      <textarea type="text" name="description" id="description" class="form-control " rows="5"> </textarea>
+      <textarea type="text" name="description" id="description" class="form-control " rows="5">{{video.content}}</textarea>
       <h6>標籤</h6>
-      <input type="text" name="tag" id="tag" class="form-control " placeholder="Tag" required>
+      <input type="text" name="tag" id="tag" class="form-control" value="{{video.classify}}" placeholder="Tag" required>
       <br>
       <div class="d-flex justify-content-end">
         <button class="btn btn-lg btn-primary " type="submit">Publish</button>

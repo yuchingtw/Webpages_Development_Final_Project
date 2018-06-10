@@ -17,8 +17,8 @@ urlpatterns = [
     url(r'postnew/', views.new_post, name="new_post"),
     url(r'postedit/', views.post_edit, name="post_edit"),
     url(r'postdel/', views.post_del, name="post_del"),
-    url(r'video_del', views.video_del, name="video_del"),
-    url(r'video_edit', views.video_edit, name="video_edit"),
+    url(r'video_del/', views.video_del, name="video_del"),
+    url(r'video_edit/', views.video_edit, name="video_edit"),
     url(r'video_new/', views.video_new, name="video_new"),
     url(r'videoShow/', views.video_show, name="video_show"),
     url(r'videoList/', views.video_list, name="video_list"),
@@ -30,5 +30,8 @@ urlpatterns = [
     url(r'get_posts_set/', views.get_posts_set, name="get_posts_set"),
     url(r'set_video_watchedtime/', views.set_video_watchedtime,
         name="set_video_watchedtime"),
+    url(r'set_post_watchedtime/', views.set_post_watchedtime,
+        name="set_post_watchedtime"),
+    url(r'calculate/', views.calculate, name="calculate")
 
 ]
