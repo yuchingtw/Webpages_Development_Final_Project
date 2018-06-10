@@ -131,10 +131,13 @@
       <div class="card-group mt-3">
         {% for p in post %}
         <div class="card mx-2">
-          <img class="card-img-top" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEAAAABACAYAAACqaXHeAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAOVSURBVHhe7dpZqE1hGMbxQ0gSEWVOyI0h4YYMJWXKkHk6F6YLiZIMCRfmpKRQuBGhkCk3uHCBwoUokTFFZpJZxv+z2p+W1bf23medvXaL8z71u1jf2Wd/ez17nXU6Z78VFovFYrFYommF6ZiAYRiEXmiPushqmqI7+mAwxmIKhqBKuYpfMb7jES5gH5ZiKFqjHKmPnpiBLTiFG3gH3+t1RqDovIXvSQp5gZNYDL0LpbhaVKzexW24jm/w7V3IXBQdV4BOZjzmYAk2YA8u4imim0R9wDHMRgsUkzoYiE24Bd/zhn3GTZyArohVmA/9COsqcY9LVMCO4Cg+DaHLUSeox17CJ7hNw37iCvQCuyEcPc9kHMBr+L5fHuIoVmA42qIW4tIO7ntjC2iGMdANz/kIfVOhAnyph35YjtOIK+QalmEv3ufWou5gJ6YhyT0mXMBuhM+xL4Jok/CmYUkKiKYBRmIXnsC3j6Of73NYhM6obsIF+EyE9wtOKQoIR5drb6zFA2iPrziOqWiCUqZQAboC/xwchH53im5eWit1AeGojK4o9UmHEy5gK3Ruo0NrfxWgO7xLsTfBrMd3E2wMt2YFaMEdWAE6yMUKgNasgOAonejvBP3q6xIcpZNMF7AA2uN5cJROMl2A9nN7pxUrAG4PK0ALJDMFrIH2+BEcpZNMF9AD96H/9KSVTBdQjlgBcOdnBWiBWAFwa1aAFtyBFaCDXKwAaM0KCI7+3VgBcOdnBWiBZKaA5tDfAfqYKq1kugB9wKk99OluWsl0AdrP7Z1WrAC4PawALZDMFLAS2qPG3gNaYj80XZJWMl1AOWIFwJ1fogI0fbUd66DRN02LadxFgw0afclCNGjRBgNQCU2I6f6yGRq6cudXpQKewa3no8edh0pSORp/0SBjWtGJjoImzTQtpjG6L/C9tqhZUIoqQA/WyNttaCr0DfT/e/fYfPSCNEe4EZrO1Ahc0uhKmweN7zyGbz8fjfi8hP7truFKzSBpjFYpqoC4aJ5Hc4HjoEkuvfO6AuLG3ERDUGegD0M7Il909Wg2WfcezQT6nk80c3gPh7EaM6F55g7QoGW+VKuAuNSGxtomQcNImgGMu2J0X1kPNyypK0RzgJr0dPOJUa+gd3Eh+qMRkia2AP08HSqhs8h3ZYjKKPQYva4j8O2RhEZ33XMHBSQdPv4faP45GFq8C90wapLL6ASLxWKxWCw1MhUVvwEkXVWvhoAdAAAAAABJRU5ErkJggg=="
-            alt="Card image cap">
+          <a href="/web/postShow?q={{p.upid}}">
+            <img class="card-img-top" src="{{ p.photo.url }}" alt="Card image cap">
+          </a>
           <div class="card-body">
-            <h5 class="card-title">{{ p.title }}</h5>
+            <a href="/web/postShow?q={{p.upid}}">
+              <h5 class="card-title">{{ p.title }}</h5>
+            </a>
           </div>
         </div>
         {% endfor %}
@@ -149,10 +152,13 @@
       <div class="card-group mt-3">
         {% for p in post_pop %}
         <div class="card mx-2">
-          <img class="card-img-top" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEAAAABACAYAAACqaXHeAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAOVSURBVHhe7dpZqE1hGMbxQ0gSEWVOyI0h4YYMJWXKkHk6F6YLiZIMCRfmpKRQuBGhkCk3uHCBwoUokTFFZpJZxv+z2p+W1bf23medvXaL8z71u1jf2Wd/ez17nXU6Z78VFovFYrFYommF6ZiAYRiEXmiPushqmqI7+mAwxmIKhqBKuYpfMb7jES5gH5ZiKFqjHKmPnpiBLTiFG3gH3+t1RqDovIXvSQp5gZNYDL0LpbhaVKzexW24jm/w7V3IXBQdV4BOZjzmYAk2YA8u4imim0R9wDHMRgsUkzoYiE24Bd/zhn3GTZyArohVmA/9COsqcY9LVMCO4Cg+DaHLUSeox17CJ7hNw37iCvQCuyEcPc9kHMBr+L5fHuIoVmA42qIW4tIO7ntjC2iGMdANz/kIfVOhAnyph35YjtOIK+QalmEv3ufWou5gJ6YhyT0mXMBuhM+xL4Jok/CmYUkKiKYBRmIXnsC3j6Of73NYhM6obsIF+EyE9wtOKQoIR5drb6zFA2iPrziOqWiCUqZQAboC/xwchH53im5eWit1AeGojK4o9UmHEy5gK3Ruo0NrfxWgO7xLsTfBrMd3E2wMt2YFaMEdWAE6yMUKgNasgOAonejvBP3q6xIcpZNMF7AA2uN5cJROMl2A9nN7pxUrAG4PK0ALJDMFrIH2+BEcpZNMF9AD96H/9KSVTBdQjlgBcOdnBWiBWAFwa1aAFtyBFaCDXKwAaM0KCI7+3VgBcOdnBWiBZKaA5tDfAfqYKq1kugB9wKk99OluWsl0AdrP7Z1WrAC4PawALZDMFLAS2qPG3gNaYj80XZJWMl1AOWIFwJ1fogI0fbUd66DRN02LadxFgw0afclCNGjRBgNQCU2I6f6yGRq6cudXpQKewa3no8edh0pSORp/0SBjWtGJjoImzTQtpjG6L/C9tqhZUIoqQA/WyNttaCr0DfT/e/fYfPSCNEe4EZrO1Ahc0uhKmweN7zyGbz8fjfi8hP7truFKzSBpjFYpqoC4aJ5Hc4HjoEkuvfO6AuLG3ERDUGegD0M7Il909Wg2WfcezQT6nk80c3gPh7EaM6F55g7QoGW+VKuAuNSGxtomQcNImgGMu2J0X1kPNyypK0RzgJr0dPOJUa+gd3Eh+qMRkia2AP08HSqhs8h3ZYjKKPQYva4j8O2RhEZ33XMHBSQdPv4faP45GFq8C90wapLL6ASLxWKxWCw1MhUVvwEkXVWvhoAdAAAAAABJRU5ErkJggg=="
-            alt="Card image cap">
+          <a href="/web/postShow?q={{p.upid}}">
+            <img class="card-img-top" src="{{ p.photo.url }}" alt="Card image cap">
+          </a>
           <div class="card-body">
-            <h5 class="card-title">{{p.title}}</h5>
+            <a href="/web/postShow?q={{p.upid}}">
+              <h5 class="card-title">{{p.title}}</h5>
+            </a>
           </div>
         </div>
         {% endfor %}
@@ -174,13 +180,18 @@
 
       <div class="card-group mt-3">
         {% for v in video %}
+
         <div class="card mx-2">
-          <img class="card-img-top" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEAAAABACAYAAACqaXHeAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAOVSURBVHhe7dpZqE1hGMbxQ0gSEWVOyI0h4YYMJWXKkHk6F6YLiZIMCRfmpKRQuBGhkCk3uHCBwoUokTFFZpJZxv+z2p+W1bf23medvXaL8z71u1jf2Wd/ez17nXU6Z78VFovFYrFYommF6ZiAYRiEXmiPushqmqI7+mAwxmIKhqBKuYpfMb7jES5gH5ZiKFqjHKmPnpiBLTiFG3gH3+t1RqDovIXvSQp5gZNYDL0LpbhaVKzexW24jm/w7V3IXBQdV4BOZjzmYAk2YA8u4imim0R9wDHMRgsUkzoYiE24Bd/zhn3GTZyArohVmA/9COsqcY9LVMCO4Cg+DaHLUSeox17CJ7hNw37iCvQCuyEcPc9kHMBr+L5fHuIoVmA42qIW4tIO7ntjC2iGMdANz/kIfVOhAnyph35YjtOIK+QalmEv3ufWou5gJ6YhyT0mXMBuhM+xL4Jok/CmYUkKiKYBRmIXnsC3j6Of73NYhM6obsIF+EyE9wtOKQoIR5drb6zFA2iPrziOqWiCUqZQAboC/xwchH53im5eWit1AeGojK4o9UmHEy5gK3Ruo0NrfxWgO7xLsTfBrMd3E2wMt2YFaMEdWAE6yMUKgNasgOAonejvBP3q6xIcpZNMF7AA2uN5cJROMl2A9nN7pxUrAG4PK0ALJDMFrIH2+BEcpZNMF9AD96H/9KSVTBdQjlgBcOdnBWiBWAFwa1aAFtyBFaCDXKwAaM0KCI7+3VgBcOdnBWiBZKaA5tDfAfqYKq1kugB9wKk99OluWsl0AdrP7Z1WrAC4PawALZDMFLAS2qPG3gNaYj80XZJWMl1AOWIFwJ1fogI0fbUd66DRN02LadxFgw0afclCNGjRBgNQCU2I6f6yGRq6cudXpQKewa3no8edh0pSORp/0SBjWtGJjoImzTQtpjG6L/C9tqhZUIoqQA/WyNttaCr0DfT/e/fYfPSCNEe4EZrO1Ahc0uhKmweN7zyGbz8fjfi8hP7truFKzSBpjFYpqoC4aJ5Hc4HjoEkuvfO6AuLG3ERDUGegD0M7Il909Wg2WfcezQT6nk80c3gPh7EaM6F55g7QoGW+VKuAuNSGxtomQcNImgGMu2J0X1kPNyypK0RzgJr0dPOJUa+gd3Eh+qMRkia2AP08HSqhs8h3ZYjKKPQYva4j8O2RhEZ33XMHBSQdPv4faP45GFq8C90wapLL6ASLxWKxWCw1MhUVvwEkXVWvhoAdAAAAAABJRU5ErkJggg=="
-            alt="Card image cap">
+          <a href="/web/videoShow?q={{v.uvid}}">
+            <img class="card-img-top" src="{{v.photo.url}}" alt="Card image cap">
+          </a>
           <div class="card-body">
-            <h5 class="card-title">{{v.title}}</h5>
+            <a style="color:black;" href="/web/videoShow?q={{v.uvid}}">
+              <h5 class="card-title">{{v.title}}</h5>
+            </a>
           </div>
         </div>
+
         {% endfor %}
       </div>
 
@@ -193,10 +204,13 @@
       <div class="card-group mt-3">
         {% for v in video_pop %}
         <div class="card mx-2">
-          <img class="card-img-top" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEAAAABACAYAAACqaXHeAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAOVSURBVHhe7dpZqE1hGMbxQ0gSEWVOyI0h4YYMJWXKkHk6F6YLiZIMCRfmpKRQuBGhkCk3uHCBwoUokTFFZpJZxv+z2p+W1bf23medvXaL8z71u1jf2Wd/ez17nXU6Z78VFovFYrFYommF6ZiAYRiEXmiPushqmqI7+mAwxmIKhqBKuYpfMb7jES5gH5ZiKFqjHKmPnpiBLTiFG3gH3+t1RqDovIXvSQp5gZNYDL0LpbhaVKzexW24jm/w7V3IXBQdV4BOZjzmYAk2YA8u4imim0R9wDHMRgsUkzoYiE24Bd/zhn3GTZyArohVmA/9COsqcY9LVMCO4Cg+DaHLUSeox17CJ7hNw37iCvQCuyEcPc9kHMBr+L5fHuIoVmA42qIW4tIO7ntjC2iGMdANz/kIfVOhAnyph35YjtOIK+QalmEv3ufWou5gJ6YhyT0mXMBuhM+xL4Jok/CmYUkKiKYBRmIXnsC3j6Of73NYhM6obsIF+EyE9wtOKQoIR5drb6zFA2iPrziOqWiCUqZQAboC/xwchH53im5eWit1AeGojK4o9UmHEy5gK3Ruo0NrfxWgO7xLsTfBrMd3E2wMt2YFaMEdWAE6yMUKgNasgOAonejvBP3q6xIcpZNMF7AA2uN5cJROMl2A9nN7pxUrAG4PK0ALJDMFrIH2+BEcpZNMF9AD96H/9KSVTBdQjlgBcOdnBWiBWAFwa1aAFtyBFaCDXKwAaM0KCI7+3VgBcOdnBWiBZKaA5tDfAfqYKq1kugB9wKk99OluWsl0AdrP7Z1WrAC4PawALZDMFLAS2qPG3gNaYj80XZJWMl1AOWIFwJ1fogI0fbUd66DRN02LadxFgw0afclCNGjRBgNQCU2I6f6yGRq6cudXpQKewa3no8edh0pSORp/0SBjWtGJjoImzTQtpjG6L/C9tqhZUIoqQA/WyNttaCr0DfT/e/fYfPSCNEe4EZrO1Ahc0uhKmweN7zyGbz8fjfi8hP7truFKzSBpjFYpqoC4aJ5Hc4HjoEkuvfO6AuLG3ERDUGegD0M7Il909Wg2WfcezQT6nk80c3gPh7EaM6F55g7QoGW+VKuAuNSGxtomQcNImgGMu2J0X1kPNyypK0RzgJr0dPOJUa+gd3Eh+qMRkia2AP08HSqhs8h3ZYjKKPQYva4j8O2RhEZ33XMHBSQdPv4faP45GFq8C90wapLL6ASLxWKxWCw1MhUVvwEkXVWvhoAdAAAAAABJRU5ErkJggg=="
-            alt="Card image cap">
+          <a href="/web/videoShow?q={{v.uvid}}">
+            <img class="card-img-top" src="{{v.photo.url}}" alt="Card image cap">
+          </a>
           <div class="card-body">
-            <h5 class="card-title">{{v.title}}</h5>
+            <a href="/web/videoShow?q={{v.uvid}}">
+              <h5 class="card-title">{{v.title}}</h5>
+            </a>
           </div>
         </div>
         {% endfor %}
