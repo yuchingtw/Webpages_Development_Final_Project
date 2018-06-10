@@ -314,8 +314,8 @@ def post_list(request):
         page = paginator.page(1)  # 如果get到了沒有的頁數則顯示第一頁
     except PageNotAnInteger as e:
         page = paginator.page(1)  # 傳入非數字也顯示第一頁
-    context['page']=page    
-    return render(request, POST_LIST_PAGE,context)
+    context['page'] = page
+    return render(request, POST_LIST_PAGE, context)
 
 
 @login_required(login_url=LOGIN_PAGE_URL)
@@ -382,7 +382,7 @@ def video_list(request):
         page = paginator.page(1)  # 如果get到了沒有的頁數則顯示第一頁
     except PageNotAnInteger as e:
         page = paginator.page(1)  # 傳入非數字也顯示第一頁
-    context['page']=page  
+    context['page'] = page
     return render(request, VIDEO_LIST_PAGE, context)
 
 
@@ -419,6 +419,7 @@ def video_edit(request):
 def video_del(request):
     vid = request.GET.get("q")
     video = Video.objects.get(uvid__exact=vid)
+    video.delete()
     print(video)
     return HttpResponseRedirect(DASHBOARD_URL)
 
