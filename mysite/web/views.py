@@ -33,6 +33,10 @@ POST_EDIT_PAGE = 'post/post_edit.html'
 POST_LIST_PAGE = 'post/post_list.html'
 POST_NEW_PAGE = 'post/post_new.html'
 DASHBOARD_PAGE = 'dashboard/dashboard.html'
+DASHBOARD_COIN_PAGE = 'dashboard/dashboard_coin.html'
+DASHBOARD_POSTS_PAGE = 'dashboard/dashboard_posts.html'
+DASHBOARD_PROFILE_PAGE = 'dashboard/dashboard_profile.html'
+DASHBOARD_VIDEOS_PAGE = 'dashboard/dashboard_videos.html'
 DASHBOARD_URL = '/dashboard'
 DASHBOARD_POSTSMANAGE_PAGE = 'dashboard/manage.html'
 SEARCH_RESULT_PAGE = 'searchresult.html'
@@ -237,19 +241,20 @@ def dashboard(request):
 
 
 def dashboard_profile(request):
-    pass
+
+    return render(request, DASHBOARD_PROFILE_PAGE)
 
 
 def dashboard_posts(request):
-    pass
+    return render(request, DASHBOARD_POSTS_PAGE)
 
 
 def dashboard_videos(request):
-    pass
+    return render(request, DASHBOARD_VIDEOS_PAGE)
 
 
 def dashboard_coin(request):
-    pass
+    return render(request, DASHBOARD_COIN_PAGE)
 
 
 """
@@ -387,6 +392,9 @@ def video_del(request):
 
 
 def search(request):
+    context = dict()
+    if str(request.user) != "AnonymousUser":
+        context = {'anon': 'true'}
     query = request.POST.get("need")
     videos_set = Video.objects.filter(
         Q(title__contains=query) | Q(classify__contains=query))
@@ -395,6 +403,7 @@ def search(request):
     print(videos_set)
     content = {'videos': videos_set, 'posts': posts_set,
                'POST_SHOW_URL': POST_SHOW_URL}
+    content.update(context)
     return render(request, SEARCH_RESULT_PAGE, content)
 
 
