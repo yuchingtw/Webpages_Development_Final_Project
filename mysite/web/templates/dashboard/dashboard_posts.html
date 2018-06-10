@@ -128,7 +128,7 @@
 
       <div class="col-9">
         <h2>所有文章</h2>
-        {% for post in posts %}
+        <hr> {% for post in posts %}
         <div class="d-flex">
           <div class="p-2">
             <a href="{% url 'post_show' %}?q={{ post.upid }}">{{ post.title }}</a>
