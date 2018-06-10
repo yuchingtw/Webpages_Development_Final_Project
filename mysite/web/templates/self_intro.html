@@ -90,8 +90,18 @@
   </nav>
   nickname: {{user.nickname}}
   <br> username: {{user.username}}
-
-
+  <br> {% for p in posts %}
+  <div class="card mx-2">
+    <a href="/web/postShow?q={{p.upid}}">
+      <img class="card-img-top" src="{{ p.photo.url }}" alt="Card image cap">
+    </a>
+    <div class="card-body">
+      <a href="/web/postShow?q={{p.upid}}">
+        <h5 class="card-title">{{ p.title }}</h5>
+      </a>
+    </div>
+  </div>
+  {% endfor %}
   <footer class="footer">
     <p>copyright@或是甚麼的</p>
     <p>
