@@ -16,9 +16,9 @@ from django.core.serializers import serialize
 
 # Create your views here.
 HOME_PAGE = 'index.html'
-HOME_PAGE_URL = "/web/index/"
+HOME_PAGE_URL = "/index/"
 LOGIN_PAGE = 'login/login.html'
-LOGIN_PAGE_URL = "/web/login/"
+LOGIN_PAGE_URL = "/login/"
 REGISTER_PAGE = 'register/register.html'
 LOGIN_REQUIRED_PAGE = 'logrequirePage.html'
 VIDEO_NEW_PAGE = 'video/video_new.html'
@@ -109,7 +109,7 @@ def logout(request):
     內建方法登出
     """
     auth.logout(request)
-    return HttpResponseRedirect('/web/index')
+    return HttpResponseRedirect('/index/')
 
 
 def register(request):
