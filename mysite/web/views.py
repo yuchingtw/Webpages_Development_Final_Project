@@ -392,9 +392,18 @@ def set_video_watchedtime(request):
     data = json.loads(request.body.decode('utf-8'))
     time = data.get("time")
     uvid = data.get("uvid")
-
     video = Video.objects.get(uvid=uvid)
     video.watched_time = video.watched_time + time
     video.save()
-    report = ""
-    return HttpResponse(report, content_type="application/json")
+    return HttpResponse("", content_type="application/json")
+
+
+@csrf_exempt
+def set_post_watchedtime(request):
+    data = json.loads(request.body.decode('utf-8'))
+    time = data.get("time")
+    upid = data.get("upid")
+    post = Post.objects.get(upid=upid)
+    post.watched_time = post.watched_time + time
+    post.save()
+    return HttpResponse("", content_type="application/json")

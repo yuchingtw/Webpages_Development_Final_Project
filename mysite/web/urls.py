@@ -31,4 +31,7 @@ urlpatterns = [
     url(r'set_video_watchedtime/', views.set_video_watchedtime,
         name="set_video_watchedtime"),
 
+    url(r'set_post_watchedtime/', views.set_post_watchedtime,
+        name="set_post_watchedtime"),
+
 ]

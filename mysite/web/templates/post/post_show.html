@@ -142,6 +142,26 @@
 
   <!-- SimpleMDE -->
   <script src="https://cdn.jsdelivr.net/simplemde/latest/simplemde.min.js"></script>
+  <!-- Axios -->
+  <script src="{% static 'js/axios.min.js' %}"></script>
+
+  <!-- Vue.js -->
+  <script src="{% static 'js/vue.min.js' %} "></script>
+
+  <script>
+    var start_time = new Date().getTime().toString();
+
+    window.document.body.onbeforeunload = function () {
+      var end_time = new Date().getTime().toString();
+      var interval_time = Math.round((end_time - start_time) / 1000);
+      axios
+        .post("{% url 'set_post_watchedtime' %}", { upid: "{{ post.upid }}", time: interval_time })
+        .then(function (response) {
+        })
+        .catch(function (error) {
+        })
+    }
+  </script>
 
   <script>
     var simplemde = new SimpleMDE({
