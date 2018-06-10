@@ -128,21 +128,32 @@
 
       <div class="col-9">
         <form action="{% url 'dashboard_profile' %}" method="post">
-          {% csrf_token %} 帳號: {{user.username}}
-          <br> 暱稱:
-          <input type="text" name="nickname" value="{{user.nickname}}" id="nickname">
-          <br> 自我簡介:
-          <input type="text" name="intro" value="{{user.intro}}" id="intro">
-          <br> 信箱:
-          <input type="text" name="email" value="{{user.email}}" id="email">
-          <br> 錢包:
-          <input type="text" name="xmr_address" value="{{user.xmr_address}}" id="xmr_address">
-          <input type="submit" value="保存">
+          {% csrf_token %}
+          <h5>帳號: {{user.username}}</h5>
+          <br>
+          <h6>暱稱</h6>
+          <input type="text" name="nickname" value="{{user.nickname}}" id="nickname" class="form-control " placeholder="NickName" required
+            autofocus>
+          <br>
+          <h6>自我簡介</h6>
+          <input type="text" name="intro" value="{{user.intro}}" id="intro" class="form-control " placeholder="Introduction to yourself"
+            required>
+          <br>
+          <h6>信箱</h6>
+          <input type="text" name="email" value="{{user.email}}" id="email" class="form-control " placeholder="Email" required>
+          <br>
+          <h6>XMR錢包位址</h6>
+          <input type="text" name="xmr_address" value="{{user.xmr_address}}" id="xmr_address" class="form-control " required>
+          <br>
+          <div class="d-flex justify-content-end">
+            <button class="btn btn-lg btn-primary " type="submit">保存</button>
+          </div>
         </form>
       </div>
     </div>
 
   </main>
+
 
   <!-- Optional JavaScript -->
   <!-- jQuery first, then Popper.js, then Bootstrap JS -->
