@@ -276,17 +276,20 @@ def post_show(request):
 
 
 def post_list(request):
+    context = dict()
+    if str(request.user) != "AnonymousUser":
+        context = {'anon': 'true'}
     post = Post.objects.all()
     current_page = request.GET.get('p')
-    paginator = Paginator(post, 10)  # 每頁顯示10筆
+    paginator = Paginator(post, 5)  # 每頁顯示5筆
     try:
         page = paginator.page(current_page)  # 根據current_page顯示頁數
     except EmptyPage as e:
         page = paginator.page(1)  # 如果get到了沒有的頁數則顯示第一頁
     except PageNotAnInteger as e:
         page = paginator.page(1)  # 傳入非數字也顯示第一頁
-
-    return render(request, POST_LIST_PAGE, {'page': page})
+    context['page']=page    
+    return render(request, POST_LIST_PAGE,context)
 
 
 @login_required(login_url=LOGIN_PAGE_URL)
@@ -341,17 +344,20 @@ def video_show(request):
 
 
 def video_list(request):
+    context = dict()
+    if str(request.user) != "AnonymousUser":
+        context = {'anon': 'true'}
     video = Video.objects.all()
     current_page = request.GET.get('p')
-    paginator = Paginator(video, 10)  # 每頁顯示10筆
+    paginator = Paginator(video, 5)  # 每頁顯示5筆
     try:
         page = paginator.page(current_page)  # 根據current_page顯示頁數
     except EmptyPage as e:
         page = paginator.page(1)  # 如果get到了沒有的頁數則顯示第一頁
     except PageNotAnInteger as e:
         page = paginator.page(1)  # 傳入非數字也顯示第一頁
-
-    return render(request, VIDEO_LIST_PAGE, {'page': page})
+    context['page']=page  
+    return render(request, VIDEO_LIST_PAGE, context)
 
 
 @login_required(login_url=LOGIN_PAGE_URL)
