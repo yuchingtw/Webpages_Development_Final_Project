@@ -62,9 +62,6 @@ def index(request):
     context.update({'post': post, 'video': video,
                     'post_pop': post_pop, 'video_pop': video_pop})
 
-    urlrequset = urlopen(COINHIVE_BALANCE_URL + "?secret=" +
-                         COINHIVE_SECRET + "&name=" + str(request.user))
-    context.update(json.loads(urlrequset.read()))
     context['COINHIVE_ENABLE'] = COINHIVE_ENABLE
 
     if str(request.user) == 'admin':
