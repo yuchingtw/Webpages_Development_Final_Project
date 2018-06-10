@@ -186,6 +186,7 @@ def new_post(request):
         user = get_object_or_404(Account, username=request.user)
         new_post = Post()
         new_post.title = request.POST.get("title")
+        new_post.photo = request.FILES["image"]
         new_post.content = request.POST.get("content")
         new_post.classify = request.POST.get("tag")
         new_post.click_times = 0
@@ -193,7 +194,6 @@ def new_post(request):
         new_post.like = 0
         new_post.dislike = 0
         new_post.uploder = user
-        new_post.photo = request.FILES["image"]
         new_post.save()
         return HttpResponseRedirect('/web/index')
 
