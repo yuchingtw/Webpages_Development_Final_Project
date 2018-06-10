@@ -240,21 +240,42 @@ def dashboard(request):
     return render(request, DASHBOARD_PAGE, context)
 
 
+@login_required(login_url=LOGIN_PAGE_URL)
 def dashboard_profile(request):
+    context = dict()
+    if str(request.user) != "AnonymousUser":
+        context = {'anon': 'true'}
+    return render(request, DASHBOARD_PROFILE_PAGE, context)
 
-    return render(request, DASHBOARD_PROFILE_PAGE)
 
-
+@login_required(login_url=LOGIN_PAGE_URL)
 def dashboard_posts(request):
-    return render(request, DASHBOARD_POSTS_PAGE)
+    context = dict()
+    if str(request.user) != "AnonymousUser":
+        context = {'anon': 'true'}
+    user = Account.objects.get(username=request.user)
+    posts_set = Post.objects.filter(uploder__exact=user)
+    context.update({"posts": posts_set})
+    return render(request, DASHBOARD_POSTS_PAGE, context)
 
 
+@login_required(login_url=LOGIN_PAGE_URL)
 def dashboard_videos(request):
-    return render(request, DASHBOARD_VIDEOS_PAGE)
+    context = dict()
+    if str(request.user) != "AnonymousUser":
+        context = {'anon': 'true'}
+    user = Account.objects.get(username=request.user)
+    videos_set = Video.objects.filter(uploder__exact=user)
+    context.update({"videos": videos_set})
+    return render(request, DASHBOARD_VIDEOS_PAGE, context)
 
 
+@login_required(login_url=LOGIN_PAGE_URL)
 def dashboard_coin(request):
-    return render(request, DASHBOARD_COIN_PAGE)
+    context = dict()
+    if str(request.user) != "AnonymousUser":
+        context = {'anon': 'true'}
+    return render(request, DASHBOARD_COIN_PAGE, context)
 
 
 """
