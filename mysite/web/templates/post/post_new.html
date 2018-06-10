@@ -137,23 +137,8 @@
   <!-- SimpleMDE -->
   <script src="https://cdn.jsdelivr.net/simplemde/latest/simplemde.min.js"></script>
 
-  <!-- Axios -->
-  <script src="{% static 'js/axios.min.js' %}"></script>
-
-  <!-- Vue.js -->
-  <script src="{% static 'js/vue.min.js' %} "></script>
-
   <script>
-    var app = new Vue({
-      el: '#app',
-      data: {
-        simplemde: null,
-      },
-      mounted() {
-        app.simplemde = new SimpleMDE({ element: document.getElementById("content") });
-      },
-      delimiters: ["[% ", "%]"]
-    })
+    var simplemde = new SimpleMDE({ element: document.getElementById("content") });
   </script>
 
   <script>
