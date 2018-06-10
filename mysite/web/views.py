@@ -8,6 +8,7 @@ from io import BytesIO
 from web.models import *
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from urllib.request import urlopen
+import requests as wtf
 import json
 from django.views.decorators.csrf import csrf_exempt
 from django.db.models import Q
@@ -41,6 +42,7 @@ SELF_INTRO_PAGE = 'self_intro.html'
 # CoinHive
 COINHIVE_ENABLE = '0'
 COINHIVE_BALANCE_URL = 'https://api.coinhive.com/user/balance'
+COINHIVE_WITHDRAW_URL = 'https://api.coinhive.com/user/withdraw'
 COINHIVE_SECRET = 'h3YhLOhht6CZN7uqR0GD6BRuin6gEjtM'
 
 
@@ -113,7 +115,7 @@ def register(request):
     '''
     註冊
     '''
-    context=dict()
+    context = dict()
     if request.method == 'POST':
         try:
             username = request.POST.get("username")
@@ -126,17 +128,18 @@ def register(request):
                 raise Exception("驗證碼輸入錯誤")
             account = Account.objects._create_user(
                 username, email, password, nickname=nickname)
-            context={"alert":'「{0}」註冊成功！'.format(account.username),"result":"ok"}
+            context = {"alert": '「{0}」註冊成功！'.format(
+                account.username), "result": "ok"}
 
         except IntegrityError:
-            context={"alert":"存在相同用戶名","result":"no"}
-            return render(request, REGISTER_PAGE,context)
+            context = {"alert": "存在相同用戶名", "result": "no"}
+            return render(request, REGISTER_PAGE, context)
         except Exception as e:
-            context={"alert":str(e),"result":"no"}
-            return render(request, REGISTER_PAGE,context)
-        return render(request, REGISTER_PAGE,context)
-    context={"alert":"","result":"nothing"}
-    return render(request, REGISTER_PAGE,context)
+            context = {"alert": str(e), "result": "no"}
+            return render(request, REGISTER_PAGE, context)
+        return render(request, REGISTER_PAGE, context)
+    context = {"alert": "", "result": "nothing"}
+    return render(request, REGISTER_PAGE, context)
 
 
 @csrf_exempt
@@ -417,5 +420,44 @@ def set_post_watchedtime(request):
 
 @csrf_exempt
 def calculate(request):
-    print("test message")
+    all_watched_time = 0
+    withdraw_hash = 0
+    videos_set = Video.objects.all()
+    posts_set = Post.objects.all()
+    for video in videos_set:
+        all_watched_time = all_watched_time + video.watched_time
+    for post in posts_set:
+        all_watched_time = all_watched_time + post.watched_time
+    urlrequset = urlopen(COINHIVE_BALANCE_URL + "?secret=" +
+                         COINHIVE_SECRET + "&name=" + "admin")
+    coinhive_result = json.loads(urlrequset.read())
+    persecon_get_coin = int(coinhive_result['balance'] / all_watched_time)
+    withdraw_hash_assert = persecon_get_coin * all_watched_time
+    print(withdraw_hash_assert)
+
+    for video in videos_set:
+        if video.watched_time > 0:
+            user = Account.objects.get(username=video.uploder)
+            user.gold_coin += video.watched_time * persecon_get_coin
+            withdraw_hash += video.watched_time * persecon_get_coin
+            video.watched_time = 0
+            video.save()
+            user.save()
+    for post in posts_set:
+        if post.watched_time > 0:
+            user = Account.objects.get(username=post.uploder)
+            user.gold_coin += post.watched_time * persecon_get_coin
+            withdraw_hash += post.watched_time * persecon_get_coin
+            post.watched_time = 0
+            post.save()
+            user.save()
+    print(withdraw_hash)
+    data = {
+        'secret': COINHIVE_SECRET,
+        'name': 'admin',
+        'amount': withdraw_hash
+    }
+    print(data)
+    response = wtf.post(COINHIVE_WITHDRAW_URL, data)
+    print(response)
     pass
