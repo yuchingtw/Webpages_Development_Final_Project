@@ -309,6 +309,14 @@ def video_list(request):
     return render(request, VIDEO_LIST_PAGE, {'page': page})
 
 
+def video_edit(request):
+    pass
+
+
+def video_del(request):
+    pass
+
+
 def search(request):
     query = request.POST.get("need")
     videos_set = Video.objects.filter(
