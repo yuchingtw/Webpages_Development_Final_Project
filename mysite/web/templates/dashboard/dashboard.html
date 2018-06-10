@@ -54,15 +54,6 @@
               <span class="sr-only">(current)</span>
             </a>
           </li>
-          <li class="nav-item">
-            <a class="nav-link" href="#">收益</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="/web/postList?p=1">文章管理</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="/web/videoList?p=1">影片管理</a>
-          </li>
         </ul>
         {% if anon %}
         <ul class="navbar-nav ml-auto">
@@ -99,7 +90,20 @@
   </nav>
 
   <main role="main" class="container">
-
+    <h1>嘿 這是你的錢:{{user.gold_coin}}
+    </h1>
+    <h3>文章</h3>
+    {% for post in posts %}
+    <p>上傳日期：{{post.publish_time}}標題：{{post.title}}
+      <a href="#">edit</a>
+    </p>
+    {% endfor %}
+    <h3>影片</h3>
+    {% for video in videos %}
+    <p>上傳日期：{{video.publish_time}}標題：{{video.title}}
+      <a href="#">edit</a>
+    </p>
+    {% endfor %}
   </main>
 
 

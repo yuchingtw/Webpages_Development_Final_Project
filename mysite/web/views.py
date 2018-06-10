@@ -27,7 +27,7 @@ POST_NEW_PAGE = 'post/post_new.html'
 VIDEO_SHOW_PAGE = 'video/video_show.html'
 VIDEO_LIST_PAGE = 'video/video_list.html'
 DASHBOARD_PAGE = 'dashboard/dashboard.html'
-DASHBOARD_POSTSMANAGE_PAGE = 'dashboard/postsmanage.html'
+DASHBOARD_POSTSMANAGE_PAGE = 'dashboard/manage.html'
 SEARCH_RESULT_PAGE = 'searchresult.html'
 SELF_INTRO_PAGE = 'self_intro.html'
 
@@ -206,7 +206,10 @@ def new_post(request):
 
 @login_required(login_url=LOGIN_PAGE_URL)
 def dashboard(request):
-    return render(request, DASHBOARD_PAGE)
+    user = Account.objects.get(username=request.user)
+    posts_set = Post.objects.filter(uploder__exact=user)
+    videos_set = Video.objects.filter(uploder__exact=user)
+    return render(request, DASHBOARD_PAGE, {'user': user, 'posts': posts_set, "videos": videos_set})
 
 
 """
@@ -314,10 +317,3 @@ def get_posts_set(request):
     posts_set = Post.objects.filter(uploder__exact=user)
     report = serialize('json', posts_set)
     return HttpResponse(report, content_type="application/json")
-
-
-def manager(request):
-    user = Account.objects.get(username=request.username)
-    posts_set = Post.objects.filter(uploder__exact=user)
-    videos_set = Video.objects.filter(uploder__exact=user)
-    return render(request, DASHBOARD_POSTSMANAGE_PAGE, {'posts': posts_set, "videos": videos_set})
