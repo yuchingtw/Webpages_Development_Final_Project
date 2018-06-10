@@ -213,11 +213,16 @@ def dashboard(request):
 
 
 def post_show(request):
+    context = dict()
+    if str(request.user) != "AnonymousUser":
+        context = {'anon': 'true'}
     upid = request.GET.get('q')
     post = Post.objects.get(upid=upid)
     uploder = Account.objects.get(username=post.uploder)
     print(uploder)
-    return render(request, POST_SHOW_PAGE, {'post': post, 'uploder': uploder})
+    context['post']=post
+    context['uploder']=uploder
+    return render(request, POST_SHOW_PAGE, context)
 
 
 def post_list(request):
@@ -240,11 +245,16 @@ def post_list(request):
 
 
 def video_show(request):
+    context = dict()
+    if str(request.user) != "AnonymousUser":
+        context = {'anon': 'true'}
     uvid = request.GET.get('q')
     video = Video.objects.get(uvid=uvid)
     uploder = Account.objects.get(username=video.uploder)
     print(uploder)
-    return render(request, VIDEO_SHOW_PAGE, {'video': video, 'uploder': uploder})
+    context['video']=video
+    context['uploder']=uploder
+    return render(request, VIDEO_SHOW_PAGE,context)
 
 
 def video_list(request):
