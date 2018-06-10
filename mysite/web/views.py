@@ -172,6 +172,7 @@ def video_new(request):
         up_video.video_length = 0
         up_video.uploder = user
         up_video.save()
+        return HttpResponseRedirect('/web/index')
 
     return render(request, VIDEO_NEW_PAGE, context)
 
