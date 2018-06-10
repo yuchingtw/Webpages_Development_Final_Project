@@ -10,6 +10,9 @@
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
     crossorigin="anonymous">
 
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.13/css/all.css" integrity="sha384-DNOHZ68U8hZfKXOrtjWvjxusGo9WQnrNx2sqG0tfsghAvtVlRW3tvkXWZh58N9jp"
+    crossorigin="anonymous">
+
   <!-- Google Font -->
   <link href="http://fonts.googleapis.com/earlyaccess/notosanstc.css" rel="stylesheet">
 
@@ -43,20 +46,26 @@
       <div class="navbar-collapse offcanvas-collapse" id="navbarsDefault">
         <ul class="navbar-nav mr-auto">
           <li class="nav-item active">
-            <a class="nav-link" href="index">首頁
+            <a class="nav-link" href="/index">首頁
               <span class="sr-only">(current)</span>
             </a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="postList?p=1">文章</a>
+            <a class="nav-link" href="/postList?p=1">文章</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="videoList?p=1">影片</a>
+            <a class="nav-link" href="/videoList?p=1">影片</a>
           </li>
           <li class="nav-item">
             <a class="nav-link" href="#">關於</a>
           </li>
         </ul>
+        <form class="form-inline my-lg-0">
+          <input class="form-control" type="text" placeholder="Search" aria-label="Search">
+          <button class="btn btn-dark" type="submit">
+            <span class="fas fa-search"></span>
+          </button>
+        </form>
         {% if anon %}
         <ul class="navbar-nav ml-auto">
           <li class="nav-itme">
@@ -66,15 +75,15 @@
             {{ balance }}
           </li>
           <li class="nav-item active">
-            <a class="nav-link" href="#">{{ request.user }}
+            <a class="nav-link" href="/dashboard">{{ request.user }}
               <span class="sr-only">(current)</span>
             </a>
           </li>
           <li class="nav-item dropdown">
             <a class="nav-link dropdown-toggle" id="dropdown01" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">投稿</a>
             <div class="dropdown-menu" aria-labelledby="dropdown01">
-              <a class="dropdown-item" href="#">文章</a>
-              <a class="dropdown-item" href="#">影片</a>
+              <a class="dropdown-item" href="/postnew">文章</a>
+              <a class="dropdown-item" href="/uploadvideo">影片</a>
             </div>
           </li>
           <form action="/web/logout" method="get">
