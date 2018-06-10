@@ -22,12 +22,15 @@ REGISTER_PAGE = 'register/register.html'
 LOGIN_REQUIRED_PAGE = 'logrequirePage.html'
 VIDEO_NEW_PAGE = 'video/video_new.html'
 POST_SHOW_PAGE = 'post/post_show.html'
-POST_SHOW_URL = '/postShow?'
+POST_SHOW_URL = '/postShow/?'
+POST_EDIT_URL = '/postedit/?'
+POST_EDIT_PAGE = 'post/post_edit.html'
 POST_LIST_PAGE = 'post/post_list.html'
 POST_NEW_PAGE = 'post/post_new.html'
 VIDEO_SHOW_PAGE = 'video/video_show.html'
 VIDEO_LIST_PAGE = 'video/video_list.html'
 DASHBOARD_PAGE = 'dashboard/dashboard.html'
+DASHBOARD_URL = '/dashboard'
 DASHBOARD_POSTSMANAGE_PAGE = 'dashboard/manage.html'
 SEARCH_RESULT_PAGE = 'searchresult.html'
 SELF_INTRO_PAGE = 'self_intro.html'
@@ -206,11 +209,30 @@ def new_post(request):
 
 
 @login_required(login_url=LOGIN_PAGE_URL)
+def post_edit(request):
+    pid = request.GET.get("q")
+    post = Post.objects.get(upid__exact=pid)
+    if post.uploder != request.user:
+        return render(request, HOME_PAGE)
+    if request.method == 'POST':
+        post.title = request.POST.get("title")
+        try:
+            post.photo = request.FILES["image"]
+        except Exception:
+            pass
+        post.content = request.POST.get("content")
+        post.classify = request.POST.get("tag")
+        post.save()
+        return HttpResponseRedirect(DASHBOARD_URL)
+    return render(request, POST_EDIT_PAGE, {'post': post})
+
+
+@login_required(login_url=LOGIN_PAGE_URL)
 def dashboard(request):
     user = Account.objects.get(username=request.user)
     posts_set = Post.objects.filter(uploder__exact=user)
     videos_set = Video.objects.filter(uploder__exact=user)
-    return render(request, DASHBOARD_PAGE, {'user': user, 'posts': posts_set, "videos": videos_set})
+    return render(request, DASHBOARD_PAGE, {'user': user, 'posts': posts_set, "videos": videos_set, "POST_EDIT_URL": POST_EDIT_URL})
 
 
 """

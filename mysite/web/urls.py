@@ -15,6 +15,7 @@ urlpatterns = [
     url(r'postShow/', views.post_show, name="post_show"),
     url(r'postList/', views.post_list, name="post_list"),
     url(r'postnew/', views.new_post, name="new_post"),
+    url(r'postedit/', views.post_edit, name="post_edit"),
     url(r'video_new/', views.video_new, name="video_new"),
     url(r'videoShow/', views.video_show, name="video_show"),
     url(r'videoList/', views.video_list, name="video_list"),
