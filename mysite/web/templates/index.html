@@ -121,12 +121,12 @@
       <div class="card-group mt-3">
         {% for p in post %}
         <div class="card mx-2">
-          <a href="/web/postShow?q={{p.upid}}">
+          <a href="/postShow?q={{p.upid}}">
             <img class="card-img-top" src="{{ p.photo.url }}" alt="Card image cap">
           </a>
           <div class="card-body">
-            <a href="/web/postShow?q={{p.upid}}">
-              <h5 class="card-title">{{ p.title }}</h5>
+            <a href="/postShow?q={{p.upid}}">
+              <h5 class="card-title text-dark">{{ p.title }}</h5>
             </a>
           </div>
         </div>
@@ -142,12 +142,12 @@
       <div class="card-group mt-3">
         {% for p in post_pop %}
         <div class="card mx-2">
-          <a href="/web/postShow?q={{p.upid}}">
+          <a href="/postShow?q={{p.upid}}">
             <img class="card-img-top" src="{{ p.photo.url }}" alt="Card image cap">
           </a>
           <div class="card-body">
-            <a href="/web/postShow?q={{p.upid}}">
-              <h5 class="card-title">{{p.title}}</h5>
+            <a href="/postShow?q={{p.upid}}">
+              <h5 class="card-title text-dark">{{p.title}}</h5>
             </a>
           </div>
         </div>
@@ -172,12 +172,12 @@
         {% for v in video %}
 
         <div class="card mx-2">
-          <a href="/web/videoShow?q={{v.uvid}}">
-            <img class="card-img-top" src="{{v.photo.url}}" alt="Card image cap">
+          <a href="/videoShow?q={{v.uvid}}">
+            <img class="text-dark card-img-top" src="{{v.photo.url}}" alt="Card image cap">
           </a>
           <div class="card-body">
-            <a href="/web/videoShow?q={{v.uvid}}">
-              <h5 class="card-title">{{v.title}}</h5>
+            <a href="/videoShow?q={{v.uvid}}">
+              <h5 class="text-dark card-title">{{v.title}}</h5>
             </a>
           </div>
         </div>
@@ -194,12 +194,12 @@
       <div class="card-group mt-3">
         {% for v in video_pop %}
         <div class="card mx-2">
-          <a href="/web/videoShow?q={{v.uvid}}">
-            <img class="card-img-top" src="{{v.photo.url}}" alt="Card image cap">
+          <a href="/videoShow?q={{v.uvid}}">
+            <img class="text-dark card-img-top" src="{{v.photo.url}}" alt="Card image cap">
           </a>
           <div class="card-body">
-            <a href="/web/videoShow?q={{v.uvid}}">
-              <h5 class="card-title">{{v.title}}</h5>
+            <a href="/videoShow?q={{v.uvid}}">
+              <h5 class="text-dark card-title">{{v.title}}</h5>
             </a>
           </div>
         </div>
