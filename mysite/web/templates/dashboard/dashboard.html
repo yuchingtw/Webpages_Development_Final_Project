@@ -90,18 +90,21 @@
   </nav>
 
   <main role="main" class="container">
+
     <h1>嘿 這是你的錢:{{user.gold_coin}}
     </h1>
     <h3>文章</h3>
     {% for post in posts %}
     <p>上傳日期：{{post.publish_time}}標題：{{post.title}}
       <a href="{{POST_EDIT_URL}}q={{post.upid}}">edit</a>
+      <a href="{{POST_DEL_URL}}q={{post.upid}}">delete</a>
     </p>
     {% endfor %}
     <h3>影片</h3>
     {% for video in videos %}
     <p>上傳日期：{{video.publish_time}}標題：{{video.title}}
       <a href="{{POST_EDIT_URL}}q={{video.uvid}}">edit</a>
+      <a href="{{POST_DEL_URL}}q={{post.upid}}">delete</a>
     </p>
     {% endfor %}
   </main>

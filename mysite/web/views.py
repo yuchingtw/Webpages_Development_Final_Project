@@ -24,6 +24,7 @@ VIDEO_NEW_PAGE = 'video/video_new.html'
 POST_SHOW_PAGE = 'post/post_show.html'
 POST_SHOW_URL = '/postShow/?'
 POST_EDIT_URL = '/postedit/?'
+POST_DEL_URL = '/postdel/?'
 POST_EDIT_PAGE = 'post/post_edit.html'
 POST_LIST_PAGE = 'post/post_list.html'
 POST_NEW_PAGE = 'post/post_new.html'
@@ -228,11 +229,20 @@ def post_edit(request):
 
 
 @login_required(login_url=LOGIN_PAGE_URL)
+def post_del(request):
+    pid = request.GET.get("q")
+    post = Post.objects.get(upid__exact=pid)
+    print(post)
+    post.delete()
+    return HttpResponseRedirect(DASHBOARD_URL)
+
+
+@login_required(login_url=LOGIN_PAGE_URL)
 def dashboard(request):
     user = Account.objects.get(username=request.user)
     posts_set = Post.objects.filter(uploder__exact=user)
     videos_set = Video.objects.filter(uploder__exact=user)
-    return render(request, DASHBOARD_PAGE, {'user': user, 'posts': posts_set, "videos": videos_set, "POST_EDIT_URL": POST_EDIT_URL})
+    return render(request, DASHBOARD_PAGE, {'user': user, 'posts': posts_set, "videos": videos_set, "POST_EDIT_URL": POST_EDIT_URL, "POST_DEL_URL": POST_DEL_URL})
 
 
 """

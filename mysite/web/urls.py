@@ -26,4 +26,5 @@ urlpatterns = [
     url(r'get_videos_set/', views.get_videos_set, name="get_videos_set"),
     url(r'get_posts_set', views.get_posts_set, name="get_posts_set"),
 
+    url(r'postdel/', views.post_del, name="post_del"),
 ]
