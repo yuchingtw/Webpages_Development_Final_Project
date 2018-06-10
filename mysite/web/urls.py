@@ -9,6 +9,7 @@ urlpatterns = [
     url(r'dashboard/', views.dashboard, name="dashboard"),
     url(r'register/', views.register, name="register_page"),
     url(r'search_result/', views.search, name="search"),
+    url(r'selfintro/', views.selfintro, name="selfintro"),
 
     url(r'postShow/', views.post_show, name="post_show"),
     url(r'postList/', views.post_list, name="post_list"),

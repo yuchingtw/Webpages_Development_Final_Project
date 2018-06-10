@@ -28,6 +28,7 @@ VIDEO_SHOW_PAGE = 'video/video_show.html'
 VIDEO_LIST_PAGE = 'video/video_list.html'
 DASHBOARD_PAGE = 'dashboard/dashboard.html'
 SEARCH_RESULT_PAGE = 'searchresult.html'
+SELF_INTRO_PAGE = 'self_intro.html'
 
 # CoinHive
 COINHIVE_ENABLE = '0'
@@ -238,7 +239,8 @@ def post_list(request):
 def video_show(request):
     uvid = request.GET.get('q')
     video = Video.objects.get(uvid=uvid)
-    return render(request, VIDEO_SHOW_PAGE, {'video': video})
+    uploder = Account.objects.get(username=video.uploder)
+    return render(request, VIDEO_SHOW_PAGE, {'video': video, 'uploder': uploder})
 
 
 def video_list(request):
@@ -265,3 +267,9 @@ def search(request):
     content = {'videos': videos_set, 'posts': posts_set,
                'POST_SHOW_URL': POST_SHOW_URL}
     return render(request, SEARCH_RESULT_PAGE, content)
+
+
+def selfintro(request):
+    username = request.GET.get('q')
+    user = Account.objects.get(username=username)
+    return render(request, SELF_INTRO_PAGE, {"user": user})
