@@ -159,6 +159,21 @@
   <script src="{% static 'js/vue.min.js' %} "></script>
 
   <script>
+    var start_time = new Date().getTime().toString();
+
+    window.document.body.onbeforeunload = function () {
+      var end_time = new Date().getTime().toString();
+      var interval_time = Math.round((end_time - start_time) / 1000);
+      axios
+        .post("{% url 'set_video_watchedtime' %}", { uvid: "{{ video.uvid }}", time: interval_time })
+        .then(function (response) {
+        })
+        .catch(function (error) {
+        })
+    }
+  </script>
+
+  <script>
     $(function () {
       'use strict'
       $('[data-toggle="offcanvas"]').on('click', function () {
