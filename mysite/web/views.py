@@ -193,6 +193,7 @@ def new_post(request):
         new_post.like = 0
         new_post.dislike = 0
         new_post.uploder = user
+        new_post.photo = request.FILES["image"]
         new_post.save()
         return HttpResponseRedirect('/web/index')
 
