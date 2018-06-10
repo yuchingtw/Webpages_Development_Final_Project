@@ -5,8 +5,9 @@ from django.db import models
 
 # Create your models here.
 
-IMAGEFILE_PATH = "videoPhotos"
+VIODEO_IMAGEFILE_PATH = "videoPhotos"
 VIDEO_PATH = "videos"
+POST_IMAGEFILE_PATH = "postPhotos"
 
 
 class Account(AbstractUser):
@@ -35,7 +36,7 @@ class Video(models.Model):
     uvid = models.UUIDField(
         primary_key=True, editable=False, default=uuid.uuid4)
     title = models.CharField(max_length=100)
-    photo = models.ImageField(upload_to=IMAGEFILE_PATH)
+    photo = models.ImageField(upload_to=VIODEO_IMAGEFILE_PATH)
     video_path = models.FileField(upload_to=VIDEO_PATH)
     content = models.TextField(blank=True)
     classify = models.CharField(max_length=20)
@@ -58,6 +59,7 @@ class Post(models.Model):
         primary_key=True, editable=False, default=uuid.uuid4)
     title = models.CharField(max_length=100)
     content = models.TextField(blank=True)
+    photo = models.ImageField(upload_to=POST_IMAGEFILE_PATH)
     classify = models.CharField(max_length=20)
     click_times = models.DecimalField(max_digits=20, decimal_places=0)
     publish_time = models.DateTimeField(auto_now_add=True)
