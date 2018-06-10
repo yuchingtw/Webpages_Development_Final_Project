@@ -10,6 +10,7 @@ from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from urllib.request import urlopen
 import json
 from django.views.decorators.csrf import csrf_exempt
+from django.db.models import Q
 
 # Create your views here.
 HOME_PAGE = 'index.html'
@@ -20,11 +21,13 @@ REGISTER_PAGE = 'register/register.html'
 LOGIN_REQUIRED_PAGE = 'logrequirePage.html'
 VIDEO_NEW_PAGE = 'video/video_new.html'
 POST_SHOW_PAGE = 'post/post_show.html'
+POST_SHOW_URL = '/postShow?'
 POST_LIST_PAGE = 'post/post_list.html'
 POST_NEW_PAGE = 'post/post_new.html'
 VIDEO_SHOW_PAGE = 'video/video_show.html'
 VIDEO_LIST_PAGE = 'video/video_list.html'
 DASHBOARD_PAGE = 'dashboard/dashboard.html'
+SEARCH_RESULT_PAGE = 'searchresult.html'
 
 # CoinHive
 COINHIVE_ENABLE = '0'
@@ -41,7 +44,7 @@ def index(request):
     video = Video.objects.order_by('-publish_time')[:6]
     post_pop = Post.objects.order_by('-like')[:6]
     video_pop = Video.objects.order_by('-like')[:6]
-
+    print(post)
     context.update({'post': post, 'video': video,
                     'post_pop': post_pop, 'video_pop': video_pop})
 
@@ -249,3 +252,15 @@ def video_list(request):
         page = paginator.page(1)  # 傳入非數字也顯示第一頁
 
     return render(request, VIDEO_LIST_PAGE, {'page': page})
+
+
+def search(request):
+    query = request.POST.get("need")
+    videos_set = Video.objects.filter(
+        Q(title__contains=query) | Q(classify__contains=query))
+    posts_set = Post.objects.filter(
+        Q(title__contains=query) | Q(classify__contains=query) | Q(content__contains=query))
+    print(videos_set)
+    content = {'videos': videos_set, 'posts': posts_set,
+               'POST_SHOW_URL': POST_SHOW_URL}
+    return render(request, SEARCH_RESULT_PAGE, content)
