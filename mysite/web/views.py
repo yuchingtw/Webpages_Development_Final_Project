@@ -110,6 +110,7 @@ def register(request):
     '''
     註冊
     '''
+    context=dict()
     if request.method == 'POST':
         try:
             username = request.POST.get("username")
@@ -122,14 +123,17 @@ def register(request):
                 raise Exception("驗證碼輸入錯誤")
             account = Account.objects._create_user(
                 username, email, password, nickname=nickname)
+            context={"alert":'「{0}」註冊成功！'.format(account.username),"result":"ok"}
 
         except IntegrityError:
-            return HttpResponse('存在相同用戶名')
+            context={"alert":"存在相同用戶名","result":"no"}
+            return render(request, REGISTER_PAGE,context)
         except Exception as e:
-            return HttpResponse(e)
-        return HttpResponse('success as ' + account.username)
-
-    return render(request, REGISTER_PAGE)
+            context={"alert":str(e),"result":"no"}
+            return render(request, REGISTER_PAGE,context)
+        return render(request, REGISTER_PAGE,context)
+    context={"alert":"","result":"nothing"}
+    return render(request, REGISTER_PAGE,context)
 
 
 @csrf_exempt

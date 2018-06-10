@@ -67,6 +67,20 @@
     <button class="btn btn-lg btn-primary btn-block" type="submit" :disabled="password!=password_repeat">送出</button>
   </form>
 
+  <!--判斷有沒有註冊成功，並alert訊息-->
+  {% if result != 'nothing' %} {% if result == 'ok' %}
+  <script>
+    setTimeout("location.href='/web/index'",1);
+    alert('{{alert}}');
+  </script>
+  
+  {% else %}
+  <script>
+    setTimeout("location.href='/web/register'",1);
+    alert('{{alert}}');
+  </script>
+  {% endif %} {% endif %}
+
   <!-- JS Cookie Library-->
   <script src="https://cdn.jsdelivr.net/npm/js-cookie@2/src/js.cookie.min.js"></script>
 
@@ -120,6 +134,8 @@
       //src後面+問號會自動刷新驗證碼img的src
     }
   </script>
+
+
 
 </body>
 
