@@ -35,7 +35,7 @@
       <div class="navbar-collapse offcanvas-collapse" id="navbarsDefault">
         <ul class="navbar-nav mr-auto">
           <li class="nav-item active">
-            <a class="nav-link" href="/index">首頁
+            <a class="nav-link" href="{% url 'index' %}">首頁
               <span class="sr-only">(current)</span>
             </a>
           </li>
@@ -44,6 +44,9 @@
           </li>
           <li class="nav-item">
             <a class="nav-link" href="/videoList?p=1">影片</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#">關於</a>
           </li>
         </ul>
         <form action="/search_result/" method="POST" class="form-inline my-lg-0">
@@ -58,32 +61,36 @@
           <li class="nav-itme">
             <img height="40" width="40" class="profile-photo" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADIAAAAyCAYAAAAeP4ixAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAATaSURBVGhD7ZpXqCRFFECfWcwBxRw/zCKY9cuECZFVZFcMqKAYQMUsJhAxBzChmDCACopgTqAYMCF+GEEURVFUMIs5nNP7CuvV3unpme5++z72wGG3Z3qqaqYr3Lr1JhYQszDuipfjq/g5/o4/4gf4AB6IM5ZF8Ei0sf8O8XackayDL2LU6MidUO7Ed/F8XMYX5ic74rcYNTjyFpSV8WdMr3+BO+N8wS/xPeYNrfNeXBzFp1G+/xNa5rSyKn6JZWNKf8OHcHdMnI7RvfohLorTxiMYNUT/wqfRwb88JlbBOzD6TO7+OC3sgVED3sJTcA3M2R6vRbtO9LnSa3BayGeoH/AK3BxzNsWL8CPMG9lE15re2Rit7Cs8A5fDxFp4GvpkysaN4t3YOw7U63CF6mruSr4vOib+xqhho+qTlIUm/+2FFSf/lVn4PkaNaWOagm/Gsst2it3rOYwa0dY30SfhSu/k8DYuiZ1zEBoARo1oq9P21iiOtfT6yb7QJcdhXnGX+iUOQTF2yyOGz9Cx2Al7oZXllXelsdoBKEuh4X95z7bYGqdYp9uy8LY6y92Ha6M4kTyL0b12tdacilHh4/o13oibYcLV3zgrul87We1fxqjwptp1HsVzcBd0E5ZYF2/CYWvQPdiaXzEqfJA26hk8CbfCcqAa3e6Ddqs/MCqj9DZshfN5VHDkN3geOuvU4TqxNz6O/2BUVunF2Aq7QVRwrk/sAhxnu7oDvoZRubmuX62pG4Tv4BbYBn8sn+Sg6f1PXAlbcxVGFTyPefTbFjdUpo7Keu7HTlgTy725MVC+++uKwzGvxwTFhtgZJt1+QQt3VtoG+8IZynqcCI7yha4xpLaC76qreTG8cJFrso+wS24097/zMBut58HqqifMilhJvqjJYpj2Jlf6Qg1+CVOp3usus+RE9L2rq6ue+BStZP3q6n/MkKQ1wT19He7nvU+jX/1C9L3oS3bGE2glbm9LjseHsUmkehaa79qkuprKXWgdR1RXPWGW3Uouqa76wbXJOrarrnrCfbqVuBr3wbLorGi0kNKrrXAMlIk2MflsRa7CDlqzKYYZzlht8POG8oehP9QLGLEBuh0uJ5sQo1X35YYmEa+jlZn+TCux2XQH8TjshuXG7TIsySOMN9CnNxRzS6Y/I5xN8kqTDvRRMUMS7T5PwJwtsbzHCaMVdrtB4fdT2OiXAqPlQzEqxyOIHJ9aeU+rdca+bG62LDQ36hYlNsz9S/R5tRvlLI0fY3rfMeqYGhuzf3mFkWZB6nA2Gna24r7eRTbH4NWo4VZsdbrlTNFk21t2i5Kov0eei2PhdLsnehoVsQQOy235/rB87WroZin6fK57+pExQZZ+bfcAHuZENMmoGL0O4z2MPptrFFGHy4RHelO22OWBjGccEXYL+29+b6mpnzrWw+hzuT5ZMzB17Ifee2l1NYl7jLygT3AQq+PZOGgKfgXrGDZG/BLlOhJhlGGib8oXdjbIC2sy0F7C/DNJj+LqqJu13B3mGciRsb95Cns9HoxNdnkO6uiPBQxvjsbomNl9vn0/mjQew0YxVB8413scdwMeg57/pYY57nw67lM84zDtmZIYzlqGQepR3hyc1vP1Jhjq1/1xzZOYDnRmPHZNQ4gz0TN2u9Ox6Iy1gMFMTPwH31oZRcGQPGkAAAAASUVORK5CYII=">
           </li>
+          {% if admin %}
           <li class="nav-itme">
-            {{ balance }}
+            <a onclick="calculatorMoney()" class="btn btn-dark text-light">計算</a>
           </li>
+          {% endif %}
           <li class="nav-item active">
-            <a class="nav-link" href="/dashboard">{{ request.user }}
+            <a class="nav-link" href="{% url 'dashboard' %}">{{ request.user }}
               <span class="sr-only">(current)</span>
             </a>
           </li>
           <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle" id="dropdown01" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">投稿</a>
+            <a class="nav-link dropdown-toggle text-light" href="#" id="dropdown01" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">投稿</a>
             <div class="dropdown-menu" aria-labelledby="dropdown01">
-              <a class="dropdown-item" href="/postnew">文章</a>
-              <a class="dropdown-item" href="/uploadvideo">影片</a>
+              <a class="dropdown-item" href="{% url 'new_post' %}">文章</a>
+              <a class="dropdown-item" href="{% url 'video_new' %}">影片</a>
             </div>
           </li>
-          <form action="/web/logout" method="get">
+          <form action="{% url 'logout' %}" method="get">
             <input class="btn btn-dark" type="submit" value="logout">
           </form>
         </ul>
         {% else %}
-        <form action="/web/login" method="get">
-          <input class="btn btn-dark" type="submit" value="login">
-        </form>
-        <form action="/web/register" method="get">
-          <input class="btn btn-dark" type="submit" value="register">
-        </form>
+        <ul class="navbar-nav ml-auto">
+          <form action="{% url 'login_page' %}" method="get">
+            <input class="btn btn-dark" type="submit" value="login">
+          </form>
+          <form action="{% url 'register_page' %}" method="get">
+            <input class="btn btn-dark" type="submit" value="register">
+          </form>
+        </ul>
         {% endif %}
       </div>
     </div>
