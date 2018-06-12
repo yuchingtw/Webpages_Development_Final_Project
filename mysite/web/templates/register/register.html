@@ -1,0 +1,142 @@
+<!DOCTYPE html> {% load staticfiles %}
+<html lang="en">
+
+<head>
+  <!-- Required meta tags -->
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+  <!-- Bootstrap CSS -->
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
+    crossorigin="anonymous">
+
+  <!-- Google Font -->
+  <link href="http://fonts.googleapis.com/earlyaccess/notosanstc.css" rel="stylesheet">
+
+  <!-- Custom styles for this template -->
+  <link href="{% static 'css/form_input.css' %}" rel="stylesheet">
+
+  <title>註冊</title>
+</head>
+
+<body>
+
+  <form id="app" class="form-signin" action="#" method="post">
+    {% csrf_token %}
+
+    <div class="text-center mb-4">
+      <h1 class="h3 mb-3 font-weight-normal">註冊</h1>
+      <p>快來註冊ㄅ</p>
+    </div>
+
+    <div class="form-label-group ">
+      <input type="text" name="username" id="username" class="form-control" placeholder="帳號" required autofocus v-model="username"
+        @change="verify_username(username)">
+      <label for="username">帳號</label>
+      <p v-if="username_avaliable == true" class="alert alert-success" role="alert">帳號可使用</p>
+      <p v-else-if="username_avaliable == false" class="alert alert-danger" role="alert">此帳號已有人使用</p>
+    </div>
+
+    <div class="form-label-group ">
+      <input type="password" name="password" id="password" class="form-control " placeholder="Password" required v-model="password">
+      <label for="password">密碼</label>
+    </div>
+
+    <div class="form-label-group ">
+      <input type="password" name="password_repeat" id="password_repeat" class="form-control " placeholder="Password" required
+        v-model="password_repeat" @change="verify_password(password, password_repeat)">
+      <label for="password_repeat">重複輸入密碼</label>
+      <p v-if="password_ok == true" class="alert alert-success" role="alert">帳號密碼一致</p>
+      <p v-else-if="password_ok == false" class="alert alert-danger" role="alert">打錯了辣87</p>
+    </div>
+
+    <div class="form-label-group ">
+      <input type="text" name="nickname" id="nickname" class="form-control" placeholder="暱稱" required>
+      <label for="nickname">暱稱</label>
+    </div>
+
+    <div class="form-label-group ">
+      <input type="text" name="email" id="email" class="form-control" placeholder="Email" required>
+      <label for="email">E-mail</label>
+    </div>
+
+    <div class="form-label-group ">
+      <img src="/web/create_code/" onclick="refresh_check_code(this)">
+      <input type="text" name="code" id="code"> (點擊圖片刷新驗證碼) </div>
+
+    <button class="btn btn-lg btn-primary btn-block" type="submit" :disabled="password!=password_repeat">送出</button>
+  </form>
+
+  <!--判斷有沒有註冊成功，並alert訊息-->
+  {% if result != 'nothing' %} {% if result == 'ok' %}
+  <script>
+    setTimeout("location.href='/web/index'",1);
+    alert('{{alert}}');
+  </script>
+  
+  {% else %}
+  <script>
+    setTimeout("location.href='/web/register'",1);
+    alert('{{alert}}');
+  </script>
+  {% endif %} {% endif %}
+
+  <!-- JS Cookie Library-->
+  <script src="https://cdn.jsdelivr.net/npm/js-cookie@2/src/js.cookie.min.js"></script>
+
+  <!-- Axios -->
+  <script src="{% static 'js/axios.min.js' %}"></script>
+
+  <!-- Vue.js -->
+  <script src="{% static 'js/vue.min.js' %} "></script>
+
+  <script>
+    var app = new Vue({
+      el: '#app',
+      data: {
+        username: null,
+        username_avaliable: null,
+        password: null,
+        password_repeat: null,
+        password_ok: null,
+      },
+      methods: {
+        verify_username: function (username) {
+          axios
+            .post("{% url 'verify_username' %}", { username: username })
+            .then(function (response) {
+              if (response.data == "null") {
+                app.username_avaliable = true;
+              }
+              else {
+                app.username_avaliable = false;
+              }
+            })
+            .catch(function (error) {
+            })
+        },
+        verify_password: function (password, password_repeat) {
+          if (password == password_repeat) {
+            app.password_ok = true;
+          }
+          else {
+            app.password_ok = false;
+          }
+        },
+      },
+      delimiters: ["[% ", "%]"]
+    })
+  </script>
+
+  <script>
+    function refresh_check_code(ths) {
+      ths.src += '?';
+      //src後面+問號會自動刷新驗證碼img的src
+    }
+  </script>
+
+
+
+</body>
+
+</html>

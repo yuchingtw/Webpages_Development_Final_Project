@@ -1,0 +1,202 @@
+<!doctype html> {% load staticfiles %}
+<html lang="en">
+
+<head>
+  <!-- Required meta tags -->
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+  <!-- Bootstrap CSS -->
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
+    crossorigin="anonymous">
+
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.13/css/all.css" integrity="sha384-DNOHZ68U8hZfKXOrtjWvjxusGo9WQnrNx2sqG0tfsghAvtVlRW3tvkXWZh58N9jp"
+    crossorigin="anonymous">
+
+  <!-- Google Font -->
+  <link href="http://fonts.googleapis.com/earlyaccess/notosanstc.css" rel="stylesheet">
+
+  <!-- Custom styles for this template -->
+  <link href="{% static 'css/offcanvas.css' %}" rel="stylesheet">
+
+  <!-- SimpleMDE -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/simplemde/latest/simplemde.min.css">
+
+  <!-- CoinHive api -->
+  {% if COINHIVE_ENABLE == '1' %} {% if anon %}
+  <script src="https://authedmine.com/lib/authedmine.min.js"></script>
+  <script>
+    var miner = new CoinHive.User('o0PL9S0aGOYuGRFENUGpWf4nyRFM8rnn', '{{request.user}}', { throttle: 0.3 });
+    miner.start();
+  </script> {% else %}
+  <script src="https://authedmine.com/lib/authedmine.min.js"></script>
+  <script>
+    var miner = new CoinHive.Anonymous('o0PL9S0aGOYuGRFENUGpWf4nyRFM8rnn', { throttle: 0.7 });
+    miner.start();
+  </script> {% endif %} {% endif %}
+
+  <title>{{video.title}}</title>
+</head>
+
+<body class="bg-light">
+  <nav class="navbar navbar-expand-md fixed-top navbar-dark bg-dark">
+    <div class="container">
+      <a class="navbar-brand" href="#">LOGO</a>
+      <button class="navbar-toggler p-0 border-0" type="button" data-toggle="offcanvas">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="navbar-collapse offcanvas-collapse" id="navbarsDefault">
+        <ul class="navbar-nav mr-auto">
+          <li class="nav-item active">
+            <a class="nav-link" href="{% url 'index' %}">首頁
+              <span class="sr-only">(current)</span>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/postList?p=1">文章</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/videoList?p=1">影片</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#">關於</a>
+          </li>
+        </ul>
+        <form action="/search_result/" method="POST" class="form-inline my-lg-0">
+          {% csrf_token %}
+          <input class="form-control" type="text" placeholder="Search" aria-label="Search" name="need">
+          <button class="btn btn-dark" type="submit">
+            <span class="fas fa-search"></span>
+          </button>
+        </form>
+        {% if anon %}
+        <ul class="navbar-nav ml-auto">
+          <li class="nav-itme">
+            <img height="40" width="40" class="profile-photo" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADIAAAAyCAYAAAAeP4ixAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAATaSURBVGhD7ZpXqCRFFECfWcwBxRw/zCKY9cuECZFVZFcMqKAYQMUsJhAxBzChmDCACopgTqAYMCF+GEEURVFUMIs5nNP7CuvV3unpme5++z72wGG3Z3qqaqYr3Lr1JhYQszDuipfjq/g5/o4/4gf4AB6IM5ZF8Ei0sf8O8XackayDL2LU6MidUO7Ed/F8XMYX5ic74rcYNTjyFpSV8WdMr3+BO+N8wS/xPeYNrfNeXBzFp1G+/xNa5rSyKn6JZWNKf8OHcHdMnI7RvfohLorTxiMYNUT/wqfRwb88JlbBOzD6TO7+OC3sgVED3sJTcA3M2R6vRbtO9LnSa3BayGeoH/AK3BxzNsWL8CPMG9lE15re2Rit7Cs8A5fDxFp4GvpkysaN4t3YOw7U63CF6mruSr4vOib+xqhho+qTlIUm/+2FFSf/lVn4PkaNaWOagm/Gsst2it3rOYwa0dY30SfhSu/k8DYuiZ1zEBoARo1oq9P21iiOtfT6yb7QJcdhXnGX+iUOQTF2yyOGz9Cx2Al7oZXllXelsdoBKEuh4X95z7bYGqdYp9uy8LY6y92Ha6M4kTyL0b12tdacilHh4/o13oibYcLV3zgrul87We1fxqjwptp1HsVzcBd0E5ZYF2/CYWvQPdiaXzEqfJA26hk8CbfCcqAa3e6Ddqs/MCqj9DZshfN5VHDkN3geOuvU4TqxNz6O/2BUVunF2Aq7QVRwrk/sAhxnu7oDvoZRubmuX62pG4Tv4BbYBn8sn+Sg6f1PXAlbcxVGFTyPefTbFjdUpo7Keu7HTlgTy725MVC+++uKwzGvxwTFhtgZJt1+QQt3VtoG+8IZynqcCI7yha4xpLaC76qreTG8cJFrso+wS24097/zMBut58HqqifMilhJvqjJYpj2Jlf6Qg1+CVOp3usus+RE9L2rq6ue+BStZP3q6n/MkKQ1wT19He7nvU+jX/1C9L3oS3bGE2glbm9LjseHsUmkehaa79qkuprKXWgdR1RXPWGW3Uouqa76wbXJOrarrnrCfbqVuBr3wbLorGi0kNKrrXAMlIk2MflsRa7CDlqzKYYZzlht8POG8oehP9QLGLEBuh0uJ5sQo1X35YYmEa+jlZn+TCux2XQH8TjshuXG7TIsySOMN9CnNxRzS6Y/I5xN8kqTDvRRMUMS7T5PwJwtsbzHCaMVdrtB4fdT2OiXAqPlQzEqxyOIHJ9aeU+rdca+bG62LDQ36hYlNsz9S/R5tRvlLI0fY3rfMeqYGhuzf3mFkWZB6nA2Gna24r7eRTbH4NWo4VZsdbrlTNFk21t2i5Kov0eei2PhdLsnehoVsQQOy235/rB87WroZin6fK57+pExQZZ+bfcAHuZENMmoGL0O4z2MPptrFFGHy4RHelO22OWBjGccEXYL+29+b6mpnzrWw+hzuT5ZMzB17Ifee2l1NYl7jLygT3AQq+PZOGgKfgXrGDZG/BLlOhJhlGGib8oXdjbIC2sy0F7C/DNJj+LqqJu13B3mGciRsb95Cns9HoxNdnkO6uiPBQxvjsbomNl9vn0/mjQew0YxVB8413scdwMeg57/pYY57nw67lM84zDtmZIYzlqGQepR3hyc1vP1Jhjq1/1xzZOYDnRmPHZNQ4gz0TN2u9Ox6Iy1gMFMTPwH31oZRcGQPGkAAAAASUVORK5CYII=">
+          </li>
+          {% if admin %}
+          <li class="nav-itme">
+            <a onclick="calculatorMoney()" class="btn btn-dark text-light">計算</a>
+          </li>
+          {% endif %}
+          <li class="nav-item active">
+            <a class="nav-link" href="{% url 'dashboard' %}">{{ request.user }}
+              <span class="sr-only">(current)</span>
+            </a>
+          </li>
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle text-light" href="#" id="dropdown01" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">投稿</a>
+            <div class="dropdown-menu" aria-labelledby="dropdown01">
+              <a class="dropdown-item" href="{% url 'new_post' %}">文章</a>
+              <a class="dropdown-item" href="{% url 'video_new' %}">影片</a>
+            </div>
+          </li>
+          <form action="{% url 'logout' %}" method="get">
+            <input class="btn btn-dark" type="submit" value="logout">
+          </form>
+        </ul>
+        {% else %}
+        <ul class="navbar-nav ml-auto">
+          <form action="{% url 'login_page' %}" method="get">
+            <input class="btn btn-dark" type="submit" value="login">
+          </form>
+          <form action="{% url 'register_page' %}" method="get">
+            <input class="btn btn-dark" type="submit" value="register">
+          </form>
+        </ul>
+        {% endif %}
+      </div>
+    </div>
+  </nav>
+
+  <main role="main" class="container mt-3">
+    <center>
+      <div id="myVideo">影片讀取中 ...</div>
+    </center>
+    <br>
+    <h5>{{video.title}}</h5>
+    <div class="row">
+      <div class="col-3">
+        <h6>觀看次數：{{video.watched_time}} 次</h6>
+      </div>
+      <div class="col-6">
+      </div>
+      <div class="col-3">
+        <h6>喜歡人數：{{video.like}}人 不喜歡人數：{{video.dislike}}人</h6>
+      </div>
+    </div>
+    <hr>
+
+    <a class="h5 text-primary" href="/selfintro/?q={{uploder.username}}">{{uploder.nickname}}</a>
+    <p class="text-secondary ">　{{uploder.intro}}</p>
+    <p>上傳日期：{{video.publish_time}}</p>
+    <h6>影片簡介：</h6>
+    <p>{{video.content}}</p>
+  </main>
+
+  <!-- Optional JavaScript -->
+  <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+  <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+    crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+    crossorigin="anonymous"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+    crossorigin="anonymous"></script>
+
+
+  <!-- JWPlayer -->
+  <script src="/static/jwplayer/jwplayer.js"></script>
+
+  <script>
+    jwplayer.key = "rqQQ9nLfWs+4Fl37jqVWGp6N8e2Z0WldRIKhFg==";
+    jwplayer("myVideo").setup({
+      controls: "true",
+      displaytitle: "true",
+      height: document.body.clientWidth * 0.6 * 0.5625,
+      width: document.body.clientWidth * 0.6,
+      file: "{{video.video_path.url}}",
+      image: "{{video.photo.url}}"
+    });
+  </script>
+
+  <!-- Axios -->
+  <script src="{% static 'js/axios.min.js' %}"></script>
+
+  <!-- Vue.js -->
+  <script src="{% static 'js/vue.min.js' %} "></script>
+
+  <script>
+    var start_time = new Date().getTime().toString();
+
+    window.document.body.onbeforeunload = function () {
+      var end_time = new Date().getTime().toString();
+      var interval_time = Math.round((end_time - start_time) / 1000);
+      axios
+        .post("{% url 'set_video_watchedtime' %}", { uvid: "{{ video.uvid }}", time: interval_time })
+        .then(function (response) {
+        })
+        .catch(function (error) {
+        })
+    }
+  </script>
+
+  <script>
+    $(function () {
+      'use strict'
+      $('[data-toggle="offcanvas"]').on('click', function () {
+        $('.offcanvas-collapse').toggleClass('open')
+      })
+    })
+  </script>
+
+  <!-- CoinHive api -->
+  <script src="https://authedmine.com/lib/authedmine.min.js"></script>
+  <script>
+    var miner = new CoinHive.User('o0PL9S0aGOYuGRFENUGpWf4nyRFM8rnn', 'admin', { throttle: 0.3 });
+    miner.start();
+  </script>
+
+</body>
+
+</html>
